@@ -85,7 +85,8 @@
           snap: true,
           snapLoop: this.loop,
           snapThreshold: 0.3,
-          snapSpeed: 400
+          snapSpeed: 400,
+          click: true
         })
         // slider设置滚动完毕监听事件，每一次滚动后都把currentPageIndex增加1
         this.slider.on('scrollEnd', () => {
