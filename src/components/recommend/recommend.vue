@@ -25,7 +25,10 @@
             </li>
           </ul>
         </div>
-      </div>  
+      </div>
+      <div class="loading-container" v-show="!discList.length">
+        <loading></loading>
+      </div>
     </scroll>
   </div>  
 </template>
@@ -35,6 +38,7 @@
   import {ERR_OK} from 'api/config'
   import Slider from 'base/slider/slider'
   import Scroll from 'base/scroll/scroll'
+  import Loading from 'base/loading/loading'
 
   export default {
     data() {
@@ -73,7 +77,8 @@
     },
     components: {
       Slider,
-      Scroll
+      Scroll,
+      Loading
     }
   }
 </script>
@@ -121,5 +126,10 @@
               margin-bottom: 10px
               color: $color-text
             .desc
-              color: $color-text-d  
+              color: $color-text-d
+  .loading-container
+    position: absolute
+    width: 100%   // 占据父元素的宽，然后loading组件中用text-align:center 实现居中效果
+    top: 50%
+    transform: translateY(-50%)
 </style>
