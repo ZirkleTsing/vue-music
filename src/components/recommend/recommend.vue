@@ -4,7 +4,7 @@
       <div class="slider-wrapper" v-if="recommends.length">
         <slider>
           <div v-for="item in recommends">
-              <a :herf="item.linkUrl">
+              <a :href="item.linkUrl">
                 <img :src="item.picUrl">
               </a>
           </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import {getRecommend} from 'api/recommend'
+  import {getRecommend, getDiscList} from 'api/recommend'
   import {ERR_OK} from 'api/config'
   import Slider from 'base/slider/slider'
 
@@ -31,6 +31,7 @@
     },
     created() {
       this._getRecommend()
+      this._getDiscList()
     },
     methods: {
       _getRecommend() {
@@ -38,6 +39,13 @@
           if (res.code === ERR_OK) {
             console.log(res.data.slider)
             this.recommends = res.data.slider
+          }
+        })
+      },
+      _getDiscList() {
+        getDiscList().then((res) => {
+          if (res.code === ERR_OK) {
+            console.log(res.data.list)
           }
         })
       }
