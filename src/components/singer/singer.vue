@@ -1,11 +1,13 @@
 <template>
   <div class="singer">
-    <div v-if="singerList" v-for="(item, index) in singerList.hot.content" class="avatar-wrapper">
-      <div class="avatar-warpper">
-        <img :src="item.avatar">
-      </div>
-      <div class="desc">
-        <h2 class="name">{{ item.Fsinger_name }}</h2>
+    <div v-if="singerList" class="avatar-wrapper">
+      <div v-for="item in singerList.hot.content">
+        <div class="avatar-warpper">
+          <img :src="item.avatar">
+        </div>
+        <div class="desc">
+          <h2 class="name">{{ item.Fsinger_name }}</h2>
+        </div>
       </div>
     </div>
   </div>
