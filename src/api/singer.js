@@ -28,6 +28,7 @@ export function getSortedList(list) {
     title: HOT_LIST_NAME,
     content: []
   }
+  const map = {}
   list.forEach((item, index) => {
    // console.log(item, index)
     if (index < HOT_LIST_LENGTH) {
@@ -37,8 +38,23 @@ export function getSortedList(list) {
         Fsinger_mid: item.Fsinger_mid,
         Fsinger_name: item.Fsinger_name
       }
-      console.log(`the ele is: ${ele.Fsinger_name}`)
+     // console.log(`the ele is: ${ele.Fsinger_name}`)
       hot.content.push(ele)
     }
+    let key = item.Findex
+    if (!map[key]) {
+      map[key] = [{
+        Fsinger_id: item.Fsinger_id,
+        Fsinger_mid: item.Fsinger_mid,
+        Fsinger_name: item.Fsinger_name
+      }]
+    } else {
+      map[key].push({
+        Fsinger_id: item.Fsinger_id,
+        Fsinger_mid: item.Fsinger_mid,
+        Fsinger_name: item.Fsinger_name
+      })
+    }
   })
+  console.log(map)
 }
