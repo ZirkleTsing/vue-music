@@ -1,6 +1,13 @@
 <template>
-  <div>
-    歌手页面
+  <div class="singer">
+    <div v-if="singerList" v-for="(item, index) in singerList.hot.content" class="avatar-wrapper">
+      <div class="avatar-warpper">
+        <img :src="item.avatar">
+      </div>
+      <div class="desc">
+        <h2 class="name">{{ item.Fsinger_name }}</h2>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,7 +17,7 @@
   export default {
     data() {
       return {
-        singerList: []
+        singerList: null
       }
     },
     mounted() {
@@ -20,7 +27,9 @@
       _getSingerList() {
         getSingerList().then((res) => {
         //  console.log(res.data.list)
-          getSortedList(res.data.list)
+          this.singerList = getSortedList(res.data.list)
+          console.log('the singerList is: ')
+          console.log(this.singerList)
         })
       }
     }
@@ -28,5 +37,9 @@
 </script>
 
 <style lang="stylus">
-
+  .singer
+    position: fixed
+    width: 100%
+    top: 88px
+    bottom: 0
 </style>

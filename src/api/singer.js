@@ -24,6 +24,7 @@ export function getSingerList() {
 }
 
 export function getSortedList(list) {
+  const avatarBaseAddress = 'https://y.gtimg.cn/music/photo_new/T001R300x300M000'
   const hot = {
     title: HOT_LIST_NAME,
     content: []
@@ -35,7 +36,7 @@ export function getSortedList(list) {
       let ele = {
        // Findex: item.Findex,
         Fsinger_id: item.Fsinger_id,
-        Fsinger_mid: item.Fsinger_mid,
+        avatar: `${avatarBaseAddress}${item.Fsinger_mid}.jpg`,
         Fsinger_name: item.Fsinger_name
       }
      // console.log(`the ele is: ${ele.Fsinger_name}`)
@@ -45,16 +46,20 @@ export function getSortedList(list) {
     if (!map[key]) {
       map[key] = [{
         Fsinger_id: item.Fsinger_id,
-        Fsinger_mid: item.Fsinger_mid,
+        avatar: `${avatarBaseAddress}${item.Fsinger_mid}.jpg`,
         Fsinger_name: item.Fsinger_name
       }]
     } else {
       map[key].push({
         Fsinger_id: item.Fsinger_id,
-        Fsinger_mid: item.Fsinger_mid,
+        avatar: `${avatarBaseAddress}${item.Fsinger_mid}.jpg`,
         Fsinger_name: item.Fsinger_name
       })
     }
   })
-  console.log(map)
+ // console.log(map)
+  return {
+    hot,
+    map
+  }
 }
