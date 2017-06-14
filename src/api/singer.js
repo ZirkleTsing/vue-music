@@ -41,7 +41,7 @@ export function getSingerList() {
  *       }
  * }
  * 转换后:
- * {
+ * [
  *   { //orderedSinger
  *     title: '热门'，
  *     content: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar}
@@ -51,7 +51,7 @@ export function getSingerList() {
  *     content: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar}
  *   }
  *   ...
- * }
+ * ]
  * @param {qq音乐抓出歌手列表数据} list
  */
 export function getSortedList(list) {
