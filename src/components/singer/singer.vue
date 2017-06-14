@@ -1,11 +1,14 @@
 <template>
   <div class="singer">
-    歌手页面
+    <scroll :data="data">
+
+    </scroll>
   </div>
 </template>
 
 <script>
   import {getSingerList, getSortedList} from 'api/singer'
+  import Scroll from 'base/scroll/scroll'
 
   export default {
     data() {
@@ -25,6 +28,9 @@
           console.log(this.singerList)
         })
       }
+    },
+    components: {
+      Scroll
     }
   }
 </script>
