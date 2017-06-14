@@ -11,7 +11,7 @@
   export default {
     data() {
       return {
-        singerList: null
+        singerList: []
       }
     },
     mounted() {
@@ -22,8 +22,6 @@
         getSingerList().then((res) => {
         //  console.log(res.data.list)
           this.singerList = getSortedList(res.data.list)
-          console.log('the singerList is: ')
-          console.log(this.singerList)
         })
       }
     },

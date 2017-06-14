@@ -83,7 +83,6 @@ export function getSortedList(list) {
       }))
     }
   })
-  console.log(map)
   let top = []
   let ret = []
   for (let key in map) { // key = ABCD....

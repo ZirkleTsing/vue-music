@@ -11,6 +11,13 @@
         </ul>
       </li>
     </ul>
+    <div v-if="data.length" class="list-shortcut">
+        <ul>
+          <li v-for="item in shortcutList" class="item">
+            {{ item }}
+          </li>
+        </ul>
+    </div>
   </scroll>
 </template>
 
@@ -22,6 +29,18 @@
       data: {
         type: Array,
         default: []
+      }
+    },
+    computed: {
+      shortcutList() {
+        return this.data.map((group) => {
+          return group.title.substr(0, 1)
+        })
+      }
+    },
+    watch: {
+      data() {
+        console.log('listview', this.data)
       }
     },
     components: {
@@ -65,4 +84,20 @@
           margin-left: 20px
           color: $color-text-l
           font-size: $font-size-medium
+    .list-shortcut
+      position: absolute
+      right: 0
+      top: 50%
+      transform: translateY(-50%)
+      width: 20px
+      padding: 20px 0
+      border-radius: 10px
+      background: $color-background-d
+      font-family: Helvetica
+      .item
+        padding: 3px
+        line-height: 1
+        color: $color-text-l
+        font-size: $font-size-small
+        text-align: center
 </style>
