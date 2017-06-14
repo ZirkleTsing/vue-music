@@ -23,7 +23,37 @@ export function getSingerList() {
   let result = jsonp(url, data, options)
   return result
 }
-
+/**
+ * 对list进行数据结构变换:
+ * 初始：
+ * {
+ *  hot: {
+ *          title: "热门",
+ *          content: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar}
+ *       },
+ *  map: {
+ *          // 未过滤
+ *          9: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar},
+ *          A: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar},
+ *          B: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar},
+ *          0: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar},
+ *          ...
+ *       }
+ * }
+ * 转换后:
+ * {
+ *   { //orderedSinger
+ *     title: '热门'，
+ *     content: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar}
+ *   },
+ *   {
+ *     title: 'A',
+ *     content: [Singer] ==> {Fsinger_id, Fsinger_mid, avatar}
+ *   }
+ *   ...
+ * }
+ * @param {qq音乐抓出歌手列表数据} list
+ */
 export function getSortedList(list) {
   const hot = {
     title: HOT_LIST_NAME,
@@ -53,16 +83,28 @@ export function getSortedList(list) {
       }))
     }
   })
-//  let top = []
+  console.log(map)
+  let top = []
   let ret = []
   for (let key in map) { // key = ABCD....
+  //  console.log(`the key is: ${key}`)
     let content = map[key]
-    console.log(key)
-    if (key.match(/a-zA-Z/)) {
+  //  console.log(content)
+    if (key.match(/[a-zA-Z]/)) {
       ret.push(new OrderedSinger({
-        key: key,
+        title: key,
         content: content
       }))
     }
   }
+  top.push(new OrderedSinger({
+    title: hot.title,
+    content: hot.content
+  }))
+
+  ret.sort((a, b) => {
+    return a.title.charCodeAt(0) - b.title.charCodeAt(0)
+  })
+
+  return top.concat(ret)
 }
