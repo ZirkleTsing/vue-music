@@ -6,6 +6,10 @@
 
 vue2 + vuex + vue-router + webpack + ES6/7 + axios + stylus
 
+### 开发环境
+
+开发环境 macOS 10.12.5 Chrome 56  nodejs 6.10.3
+
 ### 数据接口说明
 
 本项目的数据均来自qq音乐
