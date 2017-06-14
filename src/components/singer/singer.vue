@@ -33,7 +33,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style scoped lang="stylus">
   .singer
     position: fixed
     width: 100%
