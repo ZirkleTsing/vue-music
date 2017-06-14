@@ -1,6 +1,6 @@
 import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
-import Singer from 'common/js/singer'
+import {Singer, OrderedSinger} from 'common/js/singer'
 
 const HOT_LIST_NAME = '热门'
 const HOT_LIST_LENGTH = 10
@@ -53,9 +53,16 @@ export function getSortedList(list) {
       }))
     }
   })
- // console.log(map)
-  return {
-    hot,
-    map
+//  let top = []
+  let ret = []
+  for (let key in map) { // key = ABCD....
+    let content = map[key]
+    console.log(key)
+    if (key.match(/a-zA-Z/)) {
+      ret.push(new OrderedSinger({
+        key: key,
+        content: content
+      }))
+    }
   }
 }
