@@ -1,7 +1,8 @@
 <template>
   <scroll :data="data" ref="listview" class="listview">
+    
     <ul>
-      <li v-for="group in data" class="list-group">
+      <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
           <li class="list-group-item" v-for="item in group.content">
@@ -11,10 +12,11 @@
         </ul>
       </li>
     </ul>
+    
     <div v-if="data.length" 
          class="list-shortcut"
-         @touchstart="onListShortcutTouchstart"
-         @touchmove.prevent.stop="onListShortcutTouchMove"
+         @touchstart="_onListShortcutTouchstart"
+         @touchmove.prevent.stop="_onListShortcutTouchMove"
     >
         <ul>
           <li v-for="(item, index) in shortcutList" class="item" :data-index="index">
@@ -22,6 +24,7 @@
           </li>
         </ul>
     </div>
+  
   </scroll>
 </template>
 
@@ -44,14 +47,16 @@
       }
     },
     methods: {
-      onListShortcutTouchstart(e) {
-        console.log(e.target)
+      _onListShortcutTouchstart(e) {
         let anchorIndex = getElementAttribute(e.target, 'index')
-        console.log(anchorIndex)
+        this._scrollTo(anchorIndex)
       },
-      onListShortcutTouchMove(e) {
+      _onListShortcutTouchMove(e) {
        // console.log('touchmove')
        // console.log(e.touches[0].pageY)
+      },
+      _scrollTo(index) {
+        this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       }
     },
     watch: {
