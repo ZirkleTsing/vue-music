@@ -20,7 +20,7 @@ vue2 + vuex + vue-router + webpack + ES6/7 + axios + stylus
 
 #### 项目还在开发中，不定期更新
 
-```
+```Bash
 git clone git@github.com:ZirkleTsing/vue-music.git 
 
 cd vue-music
@@ -32,8 +32,16 @@ npm run dev
 
 ### 目标功能
 
-- [ ] 推荐页面轮播图
-- [ ] 热门歌单推荐
-- [ ] 歌手信息通讯录
+- [x] [header组件](#1)
+- [x] 导航组件
+- [x] oading组件
+- [x] scroll组件
+- [x] 热门歌单推荐组件
+- [x] 通讯录组件
+- [ ] 搜索组件
+- [ ] 音乐盒组件
+- [ ] 台词组件
 - [ ] TODO
 
+
+- [测试](https://github.com/ZirkleTsing/vue-music#1)
