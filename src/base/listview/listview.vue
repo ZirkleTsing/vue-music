@@ -11,9 +11,13 @@
         </ul>
       </li>
     </ul>
-    <div v-if="data.length" class="list-shortcut">
+    <div v-if="data.length" 
+         class="list-shortcut"
+         @touchstart="onListShortcutTouchstart"
+         @touchmove.prevent.stop="onListShortcutTouchMove"
+    >
         <ul>
-          <li v-for="item in shortcutList" class="item">
+          <li v-for="(item, index) in shortcutList" class="item" :data-index="index">
             {{ item }}
           </li>
         </ul>
@@ -23,6 +27,7 @@
 
 <script>
   import Scroll from 'base/scroll/scroll'
+  import {getElementAttribute} from 'common/js/dom'
 
   export default {
     props: {
@@ -36,6 +41,17 @@
         return this.data.map((group) => {
           return group.title.substr(0, 1)
         })
+      }
+    },
+    methods: {
+      onListShortcutTouchstart(e) {
+        console.log(e.target)
+        let anchorIndex = getElementAttribute(e.target, 'index')
+        console.log(anchorIndex)
+      },
+      onListShortcutTouchMove(e) {
+       // console.log('touchmove')
+       // console.log(e.touches[0].pageY)
       }
     },
     watch: {
