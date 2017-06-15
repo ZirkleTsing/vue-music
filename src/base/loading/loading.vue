@@ -10,7 +10,7 @@
     props: {
       title: {
         type: String,
-        default: '正在输入...'
+        default: '正在载入...'
       }
     }
   }
