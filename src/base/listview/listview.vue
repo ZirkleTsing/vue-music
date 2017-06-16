@@ -32,12 +32,17 @@
   import Scroll from 'base/scroll/scroll'
   import {getElementAttribute} from 'common/js/dom'
 
+  const ANCHOR_HEIGHT = 18
+
   export default {
     props: {
       data: {
         type: Array,
         default: []
       }
+    },
+    created() {
+      this.posY = {}
     },
     computed: {
       shortcutList() {
@@ -49,11 +54,17 @@
     methods: {
       _onListShortcutTouchstart(e) {
         let anchorIndex = getElementAttribute(e.target, 'index')
+        let firstTouch = e.touches[0] // 表示当前跟踪的触摸操作的touch对象的数组
+        this.posY.touchStartY = firstTouch.pageY // 触摸目标在页面中的x坐标
+        console.log(this.posY)  // 经测试 clientY和pageY相同,clientY视口中的y坐标,pageY页面中的y坐标,但是与screenY不同,后者大
         this._scrollTo(anchorIndex)
+        this.posY.anchorIndex = anchorIndex
       },
       _onListShortcutTouchMove(e) {
-       // console.log('touchmove')
-       // console.log(e.touches[0].pageY)
+        let firstTouch = e.touches[0]
+        this.posY.touchMoveY = firstTouch.pageY
+        const delta = Math.floor((this.posY.touchMoveY - this.posY.touchStartY) / ANCHOR_HEIGHT)
+        this._scrollTo(parseInt(this.posY.anchorIndex) + delta) // getElementAttribute返回的是String,如果没转 会出bug
       },
       _scrollTo(index) {
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
