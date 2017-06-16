@@ -1,6 +1,6 @@
 ## listview.vue
 
-- [x] #### 功能一:实现手指滑动通讯录导航左侧通讯录列表滑动
+#### ~~功能一:实现手指滑动通讯录导航左侧通讯录列表滑动~~
 
 1. 在touchStart时记录鼠标的纵坐标y1,写入vue实例,并且记录此时触摸的dom编号anchorIndex
 2. 在touchMove时记录鼠标的纵坐标y2,写入vue实例;
@@ -9,7 +9,7 @@
 
 
 
-- [ ] #### 功能二:实现左侧通讯录列表和右侧通讯录导航栏联动,高亮提示
+#### 功能二:实现左侧通讯录列表和右侧通讯录导航栏联动,高亮提示
 
 1. 在get到音乐列表数据后计算通讯录每一类的高度,存入数组(用于判断目标y坐标落入哪个区间)
 
@@ -33,13 +33,13 @@
          class="list-shortcut"
          @touchstart="_onListShortcutTouchstart"
          @touchmove.prevent.stop="_onListShortcutTouchMove"
-    >
-        <ul>
-          <li v-for="(item, index) in shortcutList" class="item" :data-index="index">
-            {{ item }}
-          </li>
-        </ul>
-    </div>
+  >
+      <ul>
+        <li v-for="(item, index) in shortcutList" class="item" :data-index="index">
+          {{ item }}
+        </li>
+      </ul>
+  </div>
 ```
 
 因为我们不需要响应式的y坐标变量，于是我们在`create`钩子中声明了:

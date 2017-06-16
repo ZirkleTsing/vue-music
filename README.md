@@ -32,7 +32,7 @@ npm run dev
 
 ### 目标功能
 
-- [x] [header组件](#1)
+- [x] [header组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/listview.md)
 - [x] 导航组件
 - [x] oading组件
 - [x] scroll组件
@@ -43,5 +43,3 @@ npm run dev
 - [ ] 台词组件
 - [ ] TODO
 
-
-- [测试](https://github.com/ZirkleTsing/vue-music#1)
