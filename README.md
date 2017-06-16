@@ -1,4 +1,4 @@
-# 菜鸡音乐盒
+# 音乐盒 web App
 
 > 本项目的初衷是学习Vue全家桶后的练手项目，写项目中遇到一些坑和难点，在这里总结出来，与大家分享。
 
@@ -32,12 +32,12 @@ npm run dev
 
 ### 目标功能
 
-- [x] [header组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/listview.md)
+- [x] header组件
 - [x] 导航组件
-- [x] oading组件
+- [x] loading组件
 - [x] scroll组件
 - [x] 热门歌单推荐组件
-- [x] 通讯录组件
+- [x] [通讯录组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/listview.md)
 - [ ] 搜索组件
 - [ ] 音乐盒组件
 - [ ] 台词组件
