@@ -137,20 +137,16 @@
         // 但是得到的currentPosition是负数,需要做一下转化
         const currentY = this.currentPositionY
         const height = this.height
-        // console.log('currentY', currentY)
-        console.log('currentY', currentY)
         if (currentY > 0) {
           this.currentIndex = 0
           return
         }
         for (let i = 0; i < this.height.length; i++) {
           // [0:0, 1:760, 2:1030, 3:1780]
-          console.log('bingo')
           if (height[i + 1] && (-currentY) > height[i] && (-currentY) < height[i + 1]) {
             this.currentIndex = i
           }
         }
-        console.log(this.currentIndex)
       }
     },
     components: {
