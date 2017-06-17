@@ -6,7 +6,7 @@
           :listenScroll="listenScroll"
           @scroll="_scroll"
   >
-    
+
     <ul>
       <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{ group.title }}</h2>
@@ -18,14 +18,18 @@
         </ul>
       </li>
     </ul>
-    
+
     <div v-if="data.length" 
          class="list-shortcut"
          @touchstart="_onListShortcutTouchstart"
          @touchmove.prevent.stop="_onListShortcutTouchMove"
     >
         <ul>
-          <li v-for="(item, index) in shortcutList" class="item" :data-index="index">
+          <li v-for="(item, index) in shortcutList"
+              class="item"
+              :data-index="index"
+              :class="{'active': index === currentIndex}"
+          >
             {{ item }}
           </li>
         </ul>
@@ -49,7 +53,8 @@
     },
     data() {
       return {
-        currentPositionY: 0
+        currentPositionY: 0,
+        currentIndex: 0
       }
     },
     created() {
@@ -57,6 +62,8 @@
       this.posY = {}
       this.probeType = 3
       this.listenScroll = true
+    // 监控每一组dom的高度
+      this.height = []
       // 这里不能监听scroll组件的'scroll'事件,因为dom还没渲染完毕,拿不到refs
     },
     // 参看vm.$on文档 'https://cn.vuejs.org/v2/api/#vm-on'
@@ -95,17 +102,55 @@
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       },
       _scroll(positionY) {
-        console.log(positionY)
         this.currentPositionY = positionY
+      },
+      _calculateHeight() {
+        // TODO
+        console.log('calculateHeight()')
+        const data = this.data
+        let currentHeight = 0
+        // 数据集中至少有一组数据
+        if (data.length) {
+          this.height.push(0)
+        }
+        // ref="listGroup" ==> [dom1, dom2, dom3, dom4]
+        const listGroup = this.$refs.listGroup
+        listGroup.forEach((ele, index) => {
+          // clientHeight相关文档参阅:'todo'
+          currentHeight += ele.clientHeight
+          this.height.push(currentHeight)
+        })
+        console.log('dom height', this.height)
       }
     },
     watch: {
-      // 参看watch文档 'https://cn.vuejs.org/v2/api/#watch'
+      // 写法参看watch文档 'https://cn.vuejs.org/v2/api/#watch'
       data() {
-        console.log('listview', this.data)
+      // 屏幕每17tick刷新一次 这样做是确保数据更新后dom一定更新了
+        setTimeout(() => {
+          this._calculateHeight()
+        }, 20)
       },
       currentPositionY() {
-        console.log('dang')
+        // scroll组件传出来的Y值一旦变化,就去判断这个Y值介于哪一个坐标区间,从而实现通讯录导航高亮效果
+        // eg: dom集合的高度区间 [0, 760, 1030, 1370, 1780, ...]
+        // 但是得到的currentPosition是负数,需要做一下转化
+        const currentY = this.currentPositionY
+        const height = this.height
+        // console.log('currentY', currentY)
+        console.log('currentY', currentY)
+        if (currentY > 0) {
+          this.currentIndex = 0
+          return
+        }
+        for (let i = 0; i < this.height.length; i++) {
+          // [0:0, 1:760, 2:1030, 3:1780]
+          console.log('bingo')
+          if (height[i + 1] && (-currentY) > height[i] && (-currentY) < height[i + 1]) {
+            this.currentIndex = i
+          }
+        }
+        console.log(this.currentIndex)
       }
     },
     components: {
@@ -167,4 +212,6 @@
         color: $color-text-l
         font-size: $font-size-small
         text-align: center
+      .active
+        color: $color-theme
 </style>
