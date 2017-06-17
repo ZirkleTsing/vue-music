@@ -97,16 +97,26 @@
         this.posY.touchMoveY = firstTouch.pageY
         const delta = Math.floor((this.posY.touchMoveY - this.posY.touchStartY) / ANCHOR_HEIGHT)
         this._scrollTo(parseInt(this.posY.anchorIndex) + delta) // getElementAttribute返回的是String,如果没转 会出bug
+       // this.currentIndex = parseInt(this.posY.anchorIndex) + delta
       },
       _scrollTo(index) {
+        if (index === null) {
+          return
+        }
+        // 边界检验,防止this.height取不到数
+        if (index < 0) {
+          index = 0
+        } else if (index > 22) {
+          index = 22
+        }
+        // 注意此时是负值,与better-scroll设定是一样的
+        this.currentPositionY = -this.height[index]
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       },
       _scroll(positionY) {
         this.currentPositionY = positionY
       },
       _calculateHeight() {
-        // TODO
-        console.log('calculateHeight()')
         const data = this.data
         let currentHeight = 0
         // 数据集中至少有一组数据
@@ -120,7 +130,6 @@
           currentHeight += ele.clientHeight
           this.height.push(currentHeight)
         })
-        console.log('dom height', this.height)
       }
     },
     watch: {
@@ -143,7 +152,7 @@
         }
         for (let i = 0; i < this.height.length; i++) {
           // [0:0, 1:760, 2:1030, 3:1780]
-          if (height[i + 1] && (-currentY) > height[i] && (-currentY) < height[i + 1]) {
+          if (height[i + 1] && (-currentY) >= height[i] && (-currentY) <= height[i + 1]) {
             this.currentIndex = i
           }
         }
