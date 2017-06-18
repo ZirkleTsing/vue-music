@@ -35,7 +35,7 @@
         </ul>
     </div>
 
-    <div class="list-fixed" v-if="fixedTitle">
+    <div class="list-fixed" v-if="fixedTitle" ref="fixed">
       <div class="fixed-title">{{fixedTitle}}</div>
     </div>
   
@@ -47,6 +47,7 @@
   import {getElementAttribute} from 'common/js/dom'
 
   const ANCHOR_HEIGHT = 18
+  const TITLE_HEIGHT = 30
 
   export default {
     props: {
@@ -59,7 +60,9 @@
       return {
         // currentPositionY 有两处赋值过程,1.左侧滑动返回实时位置;2.滑动右侧导航栏,返回带有边界检验的合法值
         currentPositionY: 0,
-        currentIndex: 0
+        currentIndex: 0,
+        // diff一定是恒大于0的,所以设初始值为-1可以判定边界条件
+        diff: -1
       }
     },
     created() {
@@ -157,6 +160,8 @@
         // scroll组件传出来的Y值一旦变化,就去判断这个Y值介于哪一个坐标区间,从而实现通讯录导航高亮效果
         // eg: dom集合的高度区间 [0, 760, 1030, 1370, 1780, ...]
         // 但是得到的currentPosition是负数,需要做一下转化
+        // currentPositionY每一次变化都要计算一次diff: diff = this.height(this.currentIndex) + this.currentPositionY
+        // 所以需要在currentIndex和currentPositionY变化后紧接着计算diff
         const currentY = this.currentPositionY
         const height = this.height
         // 这个流程是用于直接滑动左侧通讯录的边界检验
@@ -168,8 +173,27 @@
           // [0:0, 1:760, 2:1030, 3:1780]
           if (height[i + 1] && (-currentY) >= height[i] && (-currentY) <= height[i + 1]) {
             this.currentIndex = i
+            this.diff = this.height[this.currentIndex + 1] + this.currentPositionY
+            return
           }
         }
+      },
+      diff() {
+        // 一旦diff值小于了标题的高度,就需要将absolute的title进行偏移
+        // 如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素; 如果用在子组件上，引用就指向组件实例滑动
+        // fixed的dom1和向上滑动的dom2之间的关系只有三种:
+        // 1.两者还没有接触 2.两者接触了 3.滑动块完全滑到视口顶端
+        // 又因为 diff值一定大于0, 所以if语句的两个情况只有 0-TITLE_HEIGHT 和 >TITLE_HEIGHT两种
+        // 两者还没有接触的时候,diff值应该是大于TITLE_HEIGHT的,此时dom1不需要偏移,所以将offset设置为0,
+        // 两者已经接触后,此时diff值应该是介于0和TITLE_HRIGHT之间的,此时的偏移值应该是diff-TITLE_HEIGHT(负数)，
+        // 即fixed向上偏移的量。一旦diff=0了则将offset变为0
+        const offset = (this.diff > 0 && this.diff < TITLE_HEIGHT) ? this.diff - TITLE_HEIGHT : 0
+        // 这里比较前一次计算的offset是否等于此时,即防止两个dom没有接触的时候(一直为0)时频繁抓取refs.fixed的dom，效率很低
+        if (this.offset === offset) {
+          return
+        }
+        this.offset = offset
+        this.$refs.fixed.style.transform = `translate3d(0, ${this.offset}px, 0)`
       }
     },
     components: {
