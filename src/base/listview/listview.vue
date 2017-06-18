@@ -34,6 +34,10 @@
           </li>
         </ul>
     </div>
+
+    <div class="list-fixed" v-if="fixedTitle">
+      <div class="fixed-title">{{fixedTitle}}</div>
+    </div>
   
   </scroll>
 </template>
@@ -53,6 +57,7 @@
     },
     data() {
       return {
+        // currentPositionY 有两处赋值过程,1.左侧滑动返回实时位置;2.滑动右侧导航栏,返回带有边界检验的合法值
         currentPositionY: 0,
         currentIndex: 0
       }
@@ -81,6 +86,13 @@
         return this.data.map((group) => {
           return group.title.substr(0, 1)
         })
+      },
+      fixedTitle() {
+        if (this.currentPositionY > 0) {
+          return ''
+        } else {
+          return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
+        }
       }
     },
     methods: {
@@ -110,6 +122,7 @@
           index = 22
         }
         // 注意此时是负值,与better-scroll设定是一样的
+        // 这个函数适用用户滑动通讯录导航栏的情况,会检查边界,当滑动左侧通讯录时,currentPositionY依旧可以>0
         this.currentPositionY = -this.height[index]
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       },
@@ -146,6 +159,7 @@
         // 但是得到的currentPosition是负数,需要做一下转化
         const currentY = this.currentPositionY
         const height = this.height
+        // 这个流程是用于直接滑动左侧通讯录的边界检验
         if (currentY > 0) {
           this.currentIndex = 0
           return
@@ -219,4 +233,16 @@
         text-align: center
       .active
         color: $color-theme
+    .list-fixed
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      .fixed-title
+        height: 30px
+        line-height: 30px
+        padding-left: 20px
+        font-size: $font-size-small
+        color: $color-text-l
+        background: $color-highlight-background
 </style>
