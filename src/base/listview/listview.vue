@@ -187,13 +187,14 @@
         // 两者还没有接触的时候,diff值应该是大于TITLE_HEIGHT的,此时dom1不需要偏移,所以将offset设置为0,
         // 两者已经接触后,此时diff值应该是介于0和TITLE_HRIGHT之间的,此时的偏移值应该是diff-TITLE_HEIGHT(负数)，
         // 即fixed向上偏移的量。一旦diff=0了则将offset变为0
-        const offset = (this.diff > 0 && this.diff < TITLE_HEIGHT) ? this.diff - TITLE_HEIGHT : 0
-        // 这里比较前一次计算的offset是否等于此时,即防止两个dom没有接触的时候(一直为0)时频繁抓取refs.fixed的dom，效率很低
-        if (this.offset === offset) {
-          return
+        const offset = this.diff - TITLE_HEIGHT
+        if (offset > 0) {
+          this.$refs.fixed.style.transform = `translate3d(0, 0, 0)`
+        } else if (offset < 0 && offset > -TITLE_HEIGHT) {
+          this.$refs.fixed.style.transform = `translate3d(0, ${offset}px, 0)`
+        } else if (offset === TITLE_HEIGHT) {
+          this.$refs.fixed.style.transform = `translate3d(0, 0, 0)`
         }
-        this.offset = offset
-        this.$refs.fixed.style.transform = `translate3d(0, ${this.offset}px, 0)`
       }
     },
     components: {
