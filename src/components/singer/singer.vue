@@ -29,8 +29,9 @@
       },
       selected(item) {
         this.setSinger(item)
+        console.log(this.singer)
         this.$router.push({
-          path: `/singer/${this.singer}`
+          path: `/singer/${this.singer.Fsinger_id}`
         })
       },
       ...mapMutations({

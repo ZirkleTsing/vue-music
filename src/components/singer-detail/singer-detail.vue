@@ -3,17 +3,27 @@
     <div class="singer-detail" v-if="singer">
       {{ singer.Fsinger_name }}
     </div>
-  </transition>  
+  </transition>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
+  import {getSingerDetail} from 'api/singer'
 
   export default {
     computed: {
       ...mapGetters([
         'singer'
       ])
+    },
+    created() {
+      if (this.singer === null) {
+        this.$router.push('/singer')
+        return
+      }
+      getSingerDetail(this.singer.Fsinger_id).then((res) => {
+        console.log(res)
+      })
     }
   }
 </script>
