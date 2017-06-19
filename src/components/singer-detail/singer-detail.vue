@@ -1,13 +1,21 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail">
-      singer-detail
+    <div class="singer-detail" v-if="singer">
+      {{ singer.Fsinger_name }}
     </div>
   </transition>  
 </template>
 
 <script>
-  export default {}
+  import {mapGetters} from 'vuex'
+
+  export default {
+    computed: {
+      ...mapGetters([
+        'singer'
+      ])
+    }
+  }
 </script>
 
 <style scoped  lang="stylus">

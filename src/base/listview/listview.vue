@@ -8,10 +8,16 @@
   >
 
     <ul>
-      <li v-for="group in data" class="list-group" ref="listGroup">
+      <li v-for="group in data"
+          class="list-group"
+          ref="listGroup"
+      >
         <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
-          <li class="list-group-item" v-for="item in group.content">
+          <li class="list-group-item"
+              v-for="item in group.content"
+              @click="selectedSinger(item)"
+          >
             <img class="avatar" :src="item.avatar">
             <span class="name">{{ item.Fsinger_name }}</span>
           </li>
@@ -146,6 +152,10 @@
           currentHeight += ele.clientHeight
           this.height.push(currentHeight)
         })
+      },
+      selectedSinger(item) {
+        // 将选中的歌手信息条目发送给父组件
+        this.$emit('selected', item)
       }
     },
     watch: {

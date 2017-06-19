@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <listview :data="singerList"></listview>
+    <listview :data="singerList" @selected="selected"></listview>
     <router-view></router-view>
   </div>
 </template>
@@ -8,6 +8,7 @@
 <script>
   import {getSingerList, getSortedList} from 'api/singer'
   import Listview from 'base/listview/listview'
+  import {mapMutations, mapGetters} from 'vuex'
   // import SingerDetail from 'components/singer-detail/singer-detail'
 
   export default {
@@ -25,7 +26,21 @@
         //  console.log(res.data.list)
           this.singerList = getSortedList(res.data.list)
         })
-      }
+      },
+      selected(item) {
+        this.setSinger(item)
+        this.$router.push({
+          path: `/singer/${this.singer}`
+        })
+      },
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      })
+    },
+    computed: {
+      ...mapGetters([
+        'singer'
+      ])
     },
     components: {
       Listview
