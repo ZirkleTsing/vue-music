@@ -25,7 +25,8 @@ module.exports = {
             'common': resolve('src/common'),
             'components': resolve('src/components'),
             'api': resolve('src/api'),
-            'base': resolve('src/base')
+            'base': resolve('src/base'),
+            'store': resolve('src/store')
         }
     },
     module: {
