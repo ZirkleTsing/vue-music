@@ -1,12 +1,14 @@
 <template>
   <div class="singer">
     <listview :data="singerList"></listview>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
   import {getSingerList, getSortedList} from 'api/singer'
   import Listview from 'base/listview/listview'
+  // import SingerDetail from 'components/singer-detail/singer-detail'
 
   export default {
     data() {
@@ -27,6 +29,7 @@
     },
     components: {
       Listview
+      // SingerDetail
     }
   }
 </script>
