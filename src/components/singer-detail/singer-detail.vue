@@ -1,8 +1,10 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail" v-if="singer">
-      {{ singer.Fsinger_name }}
-    </div>
+    <music-list
+      :song="song"
+      :title="singer.Fsinger_name"
+      :bgImage="singer.avatar"
+    ></music-list>
   </transition>
 </template>
 
@@ -11,6 +13,7 @@
   import {getSingerDetail} from 'api/singer'
   import {ERR_OK} from 'api/config'
   import {createSong} from 'common/js/song'
+  import MusicList from 'components/music-list/music-list'
 
   export default {
     data() {
@@ -28,11 +31,11 @@
         this.$router.push('/singer')
         return
       }
+      // 异步过程 所以激活传入music-list中的song一开始为空
       getSingerDetail(this.singer.Fsinger_id).then((res) => {
         // res: {code, data, message, subcode}
         if (res.code === ERR_OK) {
           this.song = this._normalizeSong(res.data.list)
-          console.log(this.song)
         }
       })
     },
@@ -47,21 +50,16 @@
         })
         return ret
       }
+    },
+    components: {
+      MusicList
     }
   }
 </script>
 
-<style scoped  lang="stylus">
+<style scoped lang="stylus">
   @import "~common/stylus/variable"
 
-  .singer-detail
-    position: fixed
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    z-index: 100
-    background: $color-background
   .slide-enter-active, .slide-leave-active
     transition: all .3s ease
   .slide-enter, .slide-leave-to
