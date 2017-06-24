@@ -20,7 +20,7 @@
 1. 在样式上我们加入了一个名字为list_fixed的dom,固定于组件的顶部,用于提示用户此时通讯录组件滑动至以哪一个字母为首的分类中,其高度与list-group-title的dom高度相同。
 2. 经过分析,我们可以发现,此时该字母所代表分类的下一个分类与list-fixed底部所处的状态位置只有四种情况: (1)未接触 (2)恰好接触 (3)部分重合 (4)完全重合
 3. 我们初始化一个diff变量,用于表示2中所分析的两个dom所处的状态。diff的值代表此时字母为首对应的list-group的dom高度和currentPositionY之间的差值,由于该值不可能为负数,所以我们将其初始化为-1。
-4. 接下来我们分析(1)(2)(3)(4)四种位置状态。我们根据diff值来判断list-fixed的向上偏移量。(1)(2)状态中两个dom并没有重合部分,所以此时 dom > TITLE_HEIGHT, 偏移量为0; (3)状态中两个dom部分重合,此时0 < diff < TITLE_HRIGHT,此时偏移量为diff-TITLE_HEIGHT; (4)状态中两个dom完全重合,此时字母区间已经恰好落入下一个区间中,此时的 list_fixed应该是偏移量为0的,所以最终我们的条件分支可分为两个: offset = (this.diff > 0 && this.diff < TITLE_HEIGHT) ? this.diff - TITLE_HEIGHT : 0
+4. 接下来我们分析(1)(2)(3)(4)四种位置状态。我们根据diff值来判断list-fixed的向上偏移量。(1)(2)状态中两个dom并没有重合部分,所以此时 dom > TITLE_HEIGHT, 偏移量为0; (3)状态中两个dom部分重合,此时0 < diff < TITLE_HRIGHT,此时偏移量为diff-TITLE_HEIGHT; (4)状态中两个dom完全重合,此时字母区间已经恰好落入下一个区间中,此时的 list_fixed应该是偏移量为0的,所以最终我们的条件分支可分为两个: offset = (this.diff > 0 && this.diff < TITLE_HEIGHT) ? this.diff - TITLE_HEIGHT : 0 
 
 ## 具体实现
 
