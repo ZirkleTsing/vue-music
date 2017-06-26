@@ -89,4 +89,7 @@
     .loading
       position: absolute
       margin-top: 300px
+    .list
+      .song-list-wrapper
+        padding: 20px 30px
 </style>
