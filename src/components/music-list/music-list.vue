@@ -7,7 +7,17 @@
       <h1 class="title">
         {{title}}
       </h1>
-      <div class="bg-Image"></div>
+      <div class="bg-image" :style="bgStyle" ref="bgImage">
+      </div>
+      <scroll :data="song"
+              :probe-type="probeType"
+              class="list"
+              ref="list"
+      >
+        <div class="song-list-wrapper">
+          <song-list :songs="song" :rank="rank" @select="selectItem"></song-list>
+        </div>
+      </scroll>
     </div>
     <loading v-else></loading>
   </div>
@@ -15,6 +25,7 @@
 
 <script>
   import Loading from 'base/loading/loading'
+  import SongList from 'base/song-list/song-list'
 
   export default {
     props: {
@@ -29,10 +40,21 @@
       bgImage: {
         type: String,
         default: ''
+      },
+      rank: {
+        type: Boolean,
+        default: false
       }
     },
     created() {
       console.log(123, this.song)
+      this.probeType = 3
+      this.listenScroll = true
+    },
+    computed: {
+      bgStyle() {
+        return `background-image:url(${this.bgImage})`
+      }
     },
     watch: {
       song() {
@@ -40,7 +62,8 @@
       }
     },
     components: {
-      Loading
+      Loading,
+      SongList
     }
   }
 </script>
@@ -49,7 +72,6 @@
   @import "~common/stylus/variable"
 
   .music-list
-    // why must fixed???????
     position: fixed
     top: 0
     left: 0
@@ -57,4 +79,14 @@
     bottom: 0
     z-index: 100
     background: $color-background
+    .bg-image
+      position: relative
+      width: 100%
+      height: 0
+      padding-top: 70%
+      transform-origin: top
+      background-size: cover
+    .loading
+      position: absolute
+      margin-top: 300px
 </style>

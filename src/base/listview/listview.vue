@@ -3,7 +3,7 @@
           ref="listview"
           class="listview"
           :probeType="probeType"
-          :listenScroll="listenScroll"
+          :listen-scroll="listenScroll"
           @scroll="_scroll"
   >
 
