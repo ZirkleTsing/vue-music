@@ -47,6 +47,7 @@
         line-height: 20px
         overflow: hidden
         .name
+          // 防止换行
           no-wrap()
           color: $color-text
         .desc

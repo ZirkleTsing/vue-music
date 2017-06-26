@@ -79,6 +79,28 @@
     bottom: 0
     z-index: 100
     background: $color-background
+    .back
+      position absolute
+      top: 0
+      left: 6px
+      z-index: 50
+      .icon-back
+        display: block
+        padding: 10px
+        font-size: $font-size-large-x
+        color: $color-theme
+    .title
+      position: absolute
+      top: 0
+      // 10% + 80% + 10%
+      left: 10%
+      z-index: 40
+      width: 80%
+      no-wrap()
+      text-align: center
+      line-height: 40px
+      font-size: $font-size-large
+      color: $color-text
     .bg-image
       position: relative
       width: 100%
