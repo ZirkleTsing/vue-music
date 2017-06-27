@@ -1,5 +1,6 @@
 <template>
   <div class="music-list">
+    
     <div v-if="song.length">
       <div class="back">
       <i class="icon-back"></i>
@@ -9,16 +10,19 @@
       </h1>
       <div class="bg-image" :style="bgStyle" ref="bgImage">
       </div>
+      
       <scroll :data="song"
               :probe-type="probeType"
               class="list"
               ref="list"
       >
         <div class="song-list-wrapper">
-          <song-list :songs="song" :rank="rank" @select="selectItem"></song-list>
+          <song-list :songs="song" :rank="rank"></song-list>
         </div>
       </scroll>
+    
     </div>
+    
     <loading v-else></loading>
   </div>
 </template>
@@ -26,6 +30,7 @@
 <script>
   import Loading from 'base/loading/loading'
   import SongList from 'base/song-list/song-list'
+  import Scroll from 'base/scroll/scroll'
 
   export default {
     props: {
@@ -47,7 +52,6 @@
       }
     },
     created() {
-      console.log(123, this.song)
       this.probeType = 3
       this.listenScroll = true
     },
@@ -56,14 +60,15 @@
         return `background-image:url(${this.bgImage})`
       }
     },
-    watch: {
-      song() {
-        console.log('change', this.song)
-      }
-    },
+    // watch: {
+    //   song() {
+    //     console.log('change', this.song)
+    //   }
+    // },
     components: {
       Loading,
-      SongList
+      SongList,
+      Scroll
     }
   }
 </script>
@@ -112,6 +117,11 @@
       position: absolute
       margin-top: 300px
     .list
+      position: fixed
+      top: 0
+      bottom: 0
+      width: 100%
+      background: $color-background
       .song-list-wrapper
         padding: 20px 30px
 </style>
