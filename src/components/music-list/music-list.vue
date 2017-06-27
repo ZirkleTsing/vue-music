@@ -1,30 +1,36 @@
 <template>
   <div class="music-list">
     
-    <div v-if="song.length">
       <div class="back">
-      <i class="icon-back"></i>
+        <i class="icon-back"></i>
       </div>
       <h1 class="title">
         {{title}}
       </h1>
       <div class="bg-image" :style="bgStyle" ref="bgImage">
+        <div class="filter" ref="filter"></div>
       </div>
+
+      <div class="bg-layer" ref="layer">123</div>
       
       <scroll :data="song"
               :probe-type="probeType"
+              :listen-scroll="listenScroll"
               class="list"
               ref="list"
+              @scroll="_scroll"
       >
+
         <div class="song-list-wrapper">
           <song-list :songs="song" :rank="rank"></song-list>
         </div>
+
+        <loading class="loading" v-if="!song.length"></loading>
+      
       </scroll>
     
     </div>
-    
-    <loading v-else></loading>
-  </div>
+
 </template>
 
 <script>
@@ -51,14 +57,36 @@
         default: false
       }
     },
+    data() {
+      return {
+        currentPositionY: 0
+      }
+    },
     created() {
       this.probeType = 3
       this.listenScroll = true
+    },
+    mounted() {
+      this.imageHeight = this.$refs.bgImage.clientHeight
+      console.log(this.imageHeight)
+      this.$refs.list.$el.style.top = `${this.imageHeight}px`
+    },
+    methods: {
+      _scroll(posY) {
+        this.currentPositionY = posY
+        console.log(this.currentPositionY)
+      }
     },
     computed: {
       bgStyle() {
         return `background-image:url(${this.bgImage})`
       }
+    },
+    watch: {
+      // currentPositionY() {
+      //   this.$refs.list.$el.style.top = `${this.imageHeight + (this.currentPositionY * 2.7)}px`
+      //   console.log('sum', this.imageHeight + (this.currentPositionY * 2.7))
+      // }
     },
     // watch: {
     //   song() {
@@ -85,7 +113,7 @@
     z-index: 100
     background: $color-background
     .back
-      position absolute
+      position: absolute
       top: 0
       left: 6px
       z-index: 50
@@ -113,15 +141,26 @@
       padding-top: 70%
       transform-origin: top
       background-size: cover
-    .loading
-      position: absolute
-      margin-top: 300px
+      // 蒙层效果
+      .filter
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: rgba(7, 17, 27, 0.4)
+    .bg-layer
+      position: relative
+      height: 100%
+      background: $color-background
+    // list 脱离文档流 和bg的relative布局重叠
     .list
       position: fixed
       top: 0
       bottom: 0
       width: 100%
       background: $color-background
+      overflow: hidden
       .song-list-wrapper
         padding: 20px 30px
 </style>
