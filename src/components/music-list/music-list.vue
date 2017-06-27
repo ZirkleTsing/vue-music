@@ -1,7 +1,7 @@
 <template>
   <div class="music-list">
     
-      <div class="back">
+      <div @click="back" class="back">
         <i class="icon-back"></i>
       </div>
       <h1 class="title">
@@ -11,7 +11,7 @@
         <div class="filter" ref="filter"></div>
       </div>
 
-      <div class="bg-layer" ref="layer">123</div>
+      <div class="bg-layer" ref="layer"></div>
       
       <scroll :data="song"
               :probe-type="probeType"
@@ -37,6 +37,8 @@
   import Loading from 'base/loading/loading'
   import SongList from 'base/song-list/song-list'
   import Scroll from 'base/scroll/scroll'
+
+  const RESERVED_HEIGHT = 40
 
   export default {
     props: {
@@ -68,13 +70,18 @@
     },
     mounted() {
       this.imageHeight = this.$refs.bgImage.clientHeight
-      console.log(this.imageHeight)
+      // console.log(this.imageHeight)
+      // -250
+      this.minTranslate = -this.imageHeight + RESERVED_HEIGHT
       this.$refs.list.$el.style.top = `${this.imageHeight}px`
     },
     methods: {
       _scroll(posY) {
         this.currentPositionY = posY
-        console.log(this.currentPositionY)
+        // console.log(this.currentPositionY)
+      },
+      back() {
+        this.$router.back()
       }
     },
     computed: {
@@ -83,10 +90,10 @@
       }
     },
     watch: {
-      // currentPositionY() {
-      //   this.$refs.list.$el.style.top = `${this.imageHeight + (this.currentPositionY * 2.7)}px`
-      //   console.log('sum', this.imageHeight + (this.currentPositionY * 2.7))
-      // }
+      currentPositionY(newVal) {
+        let translateY = Math.max(this.minTranslate, newVal)
+        this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
+      }
     },
     // watch: {
     //   song() {
@@ -160,7 +167,7 @@
       bottom: 0
       width: 100%
       background: $color-background
-      overflow: hidden
+      // overflow: hidden
       .song-list-wrapper
         padding: 20px 30px
 </style>
