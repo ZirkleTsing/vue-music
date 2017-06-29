@@ -93,13 +93,17 @@
       currentPositionY(newVal) {
         let translateY = Math.max(this.minTranslate, newVal)
         this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
+        // 在临界值的时候将图片高度变矮 然后index覆盖list文字,使其hidden
+        // let list = this.$refs.list.$el
+        // if (newVal < this.minTranslate) {
+        //   list.style.transform = `translate3d(0,${translateY}px,0)`
+        //   this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
+        // } else {
+        //   this.$refs.list.$el.style.top = `${this.imageHeight}px`
+        //   this.$refs.layer.style.transform = `translate3d(0,${newVal}px,0)`
+        // }
       }
     },
-    // watch: {
-    //   song() {
-    //     console.log('change', this.song)
-    //   }
-    // },
     components: {
       Loading,
       SongList,
@@ -160,6 +164,7 @@
       position: relative
       height: 100%
       background: $color-background
+
     // list 脱离文档流 和bg的relative布局重叠
     .list
       position: fixed
