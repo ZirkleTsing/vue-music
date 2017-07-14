@@ -32,8 +32,8 @@ npm run dev
 
 ### 目标功能
 
-- [x] header组件
-- [x] 导航组件
+- [x] [header组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/app.md)
+- [x] [导航组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/app.md)
 - [x] loading组件
 - [x] scroll组件
 - [x] 热门歌单推荐组件
