@@ -82,3 +82,6 @@
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
       }
 ```
+
+
+#### [回到文档主页](https://github.com/ZirkleTsing/vue-music)
