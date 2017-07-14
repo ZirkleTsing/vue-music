@@ -35,7 +35,7 @@ npm run dev
 - [x] [header组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/app.md)
 - [x] [导航组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/app.md)
 - [x] loading组件
-- [x] scroll组件
+- [x] [scroll组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/scroll.md)
 - [x] 热门歌单推荐组件
 - [x] [通讯录组件](https://github.com/ZirkleTsing/vue-music/blob/master/src/doc/listview.md)
 - [ ] 搜索组件
