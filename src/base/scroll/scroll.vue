@@ -62,7 +62,7 @@
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
       }
     },
-    watch: {      // 这里是从recommand组件传入的对象，异步过程，先后顺序很重要，需要注意
+    watch: {      // 这里需要注意,recommand组件传入的data值的过程是一个异步过程,一开始data为null,异步过程后refresh后才会得到正确的滚动栏。
       data() {
         setTimeout(() => {
           this.refresh()
