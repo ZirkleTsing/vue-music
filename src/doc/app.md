@@ -1,4 +1,4 @@
-## header组件、导航栏tab组件
+## App.vue 入口文件实现细节
 
 这里主要说一下整个页面的设计:App.vue是整个页面的入口文件,分为三部分:header组件、导航导航栏组件、router-link渲染入口。
 ```HTML
@@ -12,7 +12,7 @@
   </div>
 </template>
 ```
-#### header组件实现
+#### header组件
 头部组件是整个页面文档流中的第一个组件元素,位于视口的最上方,没什么特别。代码样式中由于使用了stylus方言,所以可以使用函数来书写样式:
 ```CSS
   @import "~common/stylus/variable"
@@ -39,7 +39,7 @@
       line-height: 44px
       font-size: $font-size-large
 ```
-#### tab导航栏组件实现
+#### tab导航栏组件
 导航栏组件由于控制着下方router-view组件的渲染工作,所以每一个导航单元都需要包裹在router-link标签之中,并且标签属性中分别指向了不同的组件。为了平均分配视口宽度，这里使用了flex布局:
 ```HTML
 <template>
