@@ -8,15 +8,17 @@
   >
 
     <ul>
-      <li v-for="group in data"
+      <li v-for="(group, index) in data"
           class="list-group"
           ref="listGroup"
+          :key="index"
       >
         <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
           <li class="list-group-item"
-              v-for="item in group.content"
+              v-for="(item,key) in group.content"
               @click="selectedSinger(item)"
+              :key="key"
           >
             <img class="avatar" :src="item.avatar">
             <span class="name">{{ item.Fsinger_name }}</span>
@@ -35,6 +37,7 @@
               class="item"
               :data-index="index"
               :class="{'active': index === currentIndex}"
+              :key="index"
           >
             {{ item }}
           </li>

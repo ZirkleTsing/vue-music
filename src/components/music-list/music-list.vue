@@ -4,9 +4,7 @@
       <div @click="back" class="back">
         <i class="icon-back"></i>
       </div>
-      <h1 class="title">
-        {{title}}
-      </h1>
+      <h1 class="title" v-html="title"></h1>
       <div class="bg-image" :style="bgStyle" ref="bgImage">
         <div class="filter" ref="filter"></div>
       </div>
@@ -91,6 +89,7 @@
     },
     watch: {
       currentPositionY(newVal) {
+        console.log(newVal)
         let translateY = Math.max(this.minTranslate, newVal)
         this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
         // 在临界值的时候将图片高度变矮 然后index覆盖list文字,使其hidden
