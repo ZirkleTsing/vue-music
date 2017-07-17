@@ -59,7 +59,8 @@
     },
     data() {
       return {
-        currentPositionY: 0
+        currentPositionY: 0,
+        paddingTop: '70%'
       }
     },
     created() {
@@ -89,9 +90,17 @@
     },
     watch: {
       currentPositionY(newVal) {
-        console.log(newVal)
+        const bgImage = this.$refs.bgImage
         let translateY = Math.max(this.minTranslate, newVal)
+        console.log(translateY)
         this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
+        if (newVal < this.minTranslate) {
+          bgImage.style.paddingTop = ''
+          bgImage.style.height = '40px'
+        } else {
+          bgImage.style.paddingTop = '70%'
+          bgImage.style.height = '0px'
+        }
         // 在临界值的时候将图片高度变矮 然后index覆盖list文字,使其hidden
         // let list = this.$refs.list.$el
         // if (newVal < this.minTranslate) {

@@ -1,10 +1,10 @@
 <template>
   <transition name="slide">
     <music-list
-      :song="song"
-      :title="singer.Fsinger_name"
-      :bgImage="singer.avatar"
-    ></music-list>
+        :song="song"
+        :title="singer.Fsinger_name"
+        :bgImage="singer.avatar"
+      ></music-list>
   </transition>
 </template>
 
