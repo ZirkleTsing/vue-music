@@ -20,7 +20,7 @@
       >
 
         <div class="song-list-wrapper">
-          <song-list :songs="song" :rank="rank"></song-list>
+          <song-list :songs="song" :rank="rank" @chooseSong="chooseSong"></song-list>
         </div>
 
         <loading class="loading" v-if="!song.length"></loading>
@@ -35,6 +35,8 @@
   import Loading from 'base/loading/loading'
   import SongList from 'base/song-list/song-list'
   import Scroll from 'base/scroll/scroll'
+  // import types from 'store/mutations.types.js'
+  import {mapMutations} from 'vuex'
 
   const RESERVED_HEIGHT = 40
 
@@ -81,7 +83,16 @@
       },
       back() {
         this.$router.back()
-      }
+      },
+      chooseSong (song, index) {
+        console.log('chooseSong emit:', song, index)
+        this.setFullScreen(true)
+        this.setList(this.song)
+      },
+      ...mapMutations({
+        setFullScreen: 'SET_FULLSCREEN',
+        setList: 'SET_LIST'
+      })
     },
     computed: {
       bgStyle() {
