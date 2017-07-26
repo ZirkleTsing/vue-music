@@ -5,7 +5,10 @@
       <div class="title">{{songName}}</div>
       <div class="subtitle">{{singerName}}</div>
     </div>
-    <div class="mini-box" v-show="!fullScreen" @click="changeToNormalBox">mini-box</div>
+    <div class="mini-box" v-show="!fullScreen" @click="changeToNormalBox">
+      <div>{{songName}}</div>
+      <div>{{singerName}}</div>
+    </div>
   </div>
 </template>
 
@@ -27,11 +30,9 @@
       ])
     },
     watch: {
-      'singer' () {
-        this.singerName = this.singer.Fsinger_name
-      },
       'list' () {
         this.songName = this.list[this.currentIndex].name
+        this.singerName = this.list[this.currentIndex].singer
       }
     },
     methods: {

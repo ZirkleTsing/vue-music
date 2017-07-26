@@ -14,6 +14,7 @@ const actions = {
     commit(types.SET_FULLSCREEN, false)
   },
   changeToNormalBox ({commit, state}) {
+    // 变换normal音乐盒: 改变fullScreen
     commit(types.SET_FULLSCREEN, true)
   }
 }
