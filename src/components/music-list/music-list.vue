@@ -36,7 +36,7 @@
   import SongList from 'base/song-list/song-list'
   import Scroll from 'base/scroll/scroll'
   // import types from 'store/mutations.types.js'
-  import {mapMutations} from 'vuex'
+  import {mapActions} from 'vuex'
 
   const RESERVED_HEIGHT = 40
 
@@ -86,12 +86,13 @@
       },
       chooseSong (song, index) {
         console.log('chooseSong emit:', song, index)
-        this.setFullScreen(true)
-        this.setList(this.song)
+        this.openMusicBox({
+          list: this.song,
+          currentIndex: index
+        })
       },
-      ...mapMutations({
-        setFullScreen: 'SET_FULLSCREEN',
-        setList: 'SET_LIST'
+      ...mapActions({
+        openMusicBox: 'openMusicBox'
       })
     },
     computed: {

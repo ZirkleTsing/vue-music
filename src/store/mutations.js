@@ -15,6 +15,9 @@ const mutations = {
   },
   [types.SET_SEQUENCELIST](state, list) {
     state.sequenceList = list
+  },
+  [types.SET_CURRENTINDEX] (state, index) {
+    state.currentIndex = index
   }
 }
 
