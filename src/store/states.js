@@ -1,7 +1,7 @@
 const state = {
   singer: null,
   // 是否处于播放状态
-  played: false,
+  playing: false,
   // 音乐盒是否全屏
   fullScreen: false,
   // 播放列表

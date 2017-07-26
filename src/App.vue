@@ -4,19 +4,21 @@
     <tab></tab>
     <keep-alive>
       <router-view></router-view>
-    </keep-alive>    
+    </keep-alive>
+    <music-box></music-box>
   </div>
 </template>
 
 <script>
 import MHeader from 'components/m-header/m-header'
 import Tab from 'components/tab/tab'
-
+import MusicBox from 'components/music-box'
 export default {
   name: 'app',
   components: {
     MHeader,
-    Tab
+    Tab,
+    MusicBox
   }
 }
 </script>
