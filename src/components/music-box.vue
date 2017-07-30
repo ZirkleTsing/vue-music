@@ -33,6 +33,7 @@
       'list' () {
         this.songName = this.list[this.currentIndex].name
         this.singerName = this.list[this.currentIndex].singer
+        console.table(this.list[this.currentIndex])
       }
     },
     methods: {
