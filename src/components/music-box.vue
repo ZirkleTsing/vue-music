@@ -19,7 +19,7 @@
         <div class="middle">
           <div class="middle-l">
             <div ref="cdWrapper" class="cd-wrapper">
-              <div v-if="playedSong" class="cd">
+              <div v-if="playedSong" class="cd"  :class="rotateState">
                 <img class="image" :src="playedSong.image"> 
               </div>
             </div>
@@ -34,8 +34,8 @@
             <div class="icon i-left">
               <i class="icon-prev"></i>
             </div>
-            <div class="icon i-center">
-              <i class="icon-play"></i>
+            <div @click="togglePlay" class="icon i-center">
+              <i :class="playIcon"></i>
             </div>
             <div class="icon i-right">
               <i class="icon-next"></i>
@@ -51,7 +51,7 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="changeToNormalBox">
         <div class="cd-wrapper">
-          <div v-if="playedSong" class="cd">
+          <div v-if="playedSong" class="cd" :class="rotateState">
             <img class="image" :src="playedSong.image">
           </div>
         </div>
@@ -61,12 +61,13 @@
         </div>
       </div>
     </transition>
-
+    <!-- 页面进入时侦测playedSong,存在即渲染音乐盒,nextTick时候渲染完毕,可以播放 -->
+    <audio ref="audio" v-if="playedSong" :src="playedSong.url"></audio>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex'
+  import {mapGetters, mapActions, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   export default {
     computed: {
@@ -75,12 +76,27 @@
         'fullScreen',
         'currentIndex',
         'singer',
-        'playedSong'
-      ])
+        'playedSong',
+        'playing'
+      ]),
+      playIcon () {
+        return this.playing ? 'icon-pause' : 'icon-play'
+      },
+      rotateState () {
+        return this.playing ? 'rotating' : 'rotating pause'
+      }
     },
     watch: {
-      playedSong () {
-        console.log(this.playedSong)
+      // playing和playedSong在一个周期内被赋值，触发watch钩子函数，此时audio渲染,nextTick时候渲染完毕后,取到dom播放音乐
+      playing () {
+        this.$nextTick(() => {
+          let audio = this.$refs.audio
+          if (this.playing) {
+            audio.play()
+          } else {
+            audio.pause()
+          }
+        })
       }
     },
     methods: {
@@ -156,9 +172,15 @@
           scale: widthMini / widthNormal
         }
       },
+      togglePlay () {
+        this.setPlaying(!this.playing)
+      },
       ...mapActions({
         changeToMiniBox: 'changeToMiniBox',
         changeToNormalBox: 'changeToNormalBox'
+      }),
+      ...mapMutations({
+        setPlaying: 'SET_PLAYING'
       })
     }
   }
@@ -236,6 +258,10 @@
               width: 100%
               height: 100%
               border-radius: 50%
+              &.rotating
+                animation: rotate 20s linear infinite
+              &.rotating.pause
+                animation-play-state: paused
               .image
                 position: absolute
                 box-sizing: border-box
@@ -268,7 +294,8 @@
               text-align: left
     .mini-player
       position: fixed
-      display: block
+      display: flex
+      align-items: center
       left: 0
       bottom: 0
       z-index: 180
@@ -282,15 +309,19 @@
         opacity: 0
       .cd-wrapper
         position: relative
-        display: inline-block
         width: 40px
         height: 40px
-        padding: 10px 10px 0 20px
-        vertical-align: top
+        box-sizing: border-box
+        margin-left: 20px
+        margin-right: 10px
         .cd
           height: 100%
           width: 100%
           border-radius: 50%
+          &.rotating
+            animation: rotate 20s linear infinite
+          &.rotating.pause
+            animation-play-state: paused
           .image
             display: block
             border-radius: 50%
@@ -298,13 +329,16 @@
             height: 100%
       .desc
         display: inline-block
-        vertical-align: top
-        padding-top: 10px
         .title
           font-size: 14px
           color: #FFFFFF
-          margin-bottom: 15px
+          margin-bottom: 5px
         .subtitle
           font-size: 12px
           color: hsla(0,0%,100%,.3)
+  @keyframes rotate
+    0%
+      transform: rotate(0)
+    100%
+      transform: rotate(360deg)
 </style>
