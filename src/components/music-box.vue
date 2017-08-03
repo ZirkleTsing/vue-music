@@ -8,6 +8,9 @@
                 @after-leave="afterLeave"
     >
       <div class="normal-player" v-show="fullScreen">
+        <div class="background">
+          <img v-if="playedSong" width="100%" height="100%" :src="playedSong.image">
+        </div>
         <div class="top">
           <div class="mini-icon" @click="changeToMiniBox">
             <i class="icon-back"></i>
@@ -200,6 +203,15 @@
       &.normal-enter
         .top
           transform: translateY(-100px)
+      .background
+        position: absolute
+        left: 0
+        top: 0
+        width: 100%
+        height: 100%
+        z-index: -1
+        opacity: 0.6
+        filter: blur(20px)
       .top
         position: relative
         margin-bottom: 25px
