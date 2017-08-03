@@ -10,6 +10,7 @@ const state = {
   sequenceList: [],
   // 当前播放中歌曲序号
   currentIndex: -1
+  // // 当前播放歌曲对象
 }
 
 export default state

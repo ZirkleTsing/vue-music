@@ -1,34 +1,46 @@
 <template>
   <div class="musicbox-wrapper" v-show="list.length > 0">
-    <div class="normal-player" v-show="fullScreen">
-      <div class="top">
-        <div class="mini-icon" @click="minibox">
-          <i class="icon-back"></i>
+
+    <transition name="normal"
+                @enter="enter"
+                @after-enter="afterEnter"
+                @leave="leave"
+                @after-leave="afterLeave"
+    >
+      <div class="normal-player" v-show="fullScreen">
+        <div class="top">
+          <div class="mini-icon" @click="minibox">
+            <i class="icon-back"></i>
+          </div>
+          <div v-if="playedSong" class="title">{{playedSong.name}}</div>
+          <div v-if="playedSong" class="subtitle">{{playedSong.singer}}</div>
         </div>
-        <div class="title">{{songName}}</div>
-        <div class="subtitle">{{singerName}}</div>
-      </div>
-      <div class="middle">
-        <div class="middle-l">
-          <div class="cd-wrapper">
-            <div class="cd">
-               <img class="image" :src="albumImg"> 
+        <div class="middle">
+          <div class="middle-l">
+            <div ref="cdWrapper" class="cd-wrapper">
+              <div v-if="playedSong" class="cd">
+                <img class="image" :src="playedSong.image"> 
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="mini-player" v-show="!fullScreen" @click="changeToNormalBox">
-      <div class="cd-wrapper">
-        <div class="cd">
-          <img class="image" :src="albumImg">
+    </transition>
+
+    <transition name="mini">
+      <div class="mini-player" v-show="!fullScreen" @click="changeToNormalBox">
+        <div class="cd-wrapper">
+          <div v-if="playedSong" class="cd">
+            <img class="image" :src="playedSong.image">
+          </div>
+        </div>
+        <div v-if="playedSong" class="desc">
+          <div class="title">{{playedSong.name}}</div>
+          <div class="subtitle">{{playedSong.singer}}</div>
         </div>
       </div>
-      <div class="desc">
-        <div class="title">{{songName}}</div>
-        <div class="subtitle">{{singerName}}</div>
-      </div>
-    </div>
+    </transition>
+
   </div>
 </template>
 
@@ -37,9 +49,6 @@
   export default {
     data () {
       return {
-        songName: '',
-        singerName: '',
-        albumImg: ''
       }
     },
     computed: {
@@ -47,16 +56,13 @@
         'list',
         'fullScreen',
         'currentIndex',
-        'singer'
+        'singer',
+        'playedSong'
       ])
     },
     watch: {
-      'list' () {
-        this.songName = this.list[this.currentIndex].name
-        this.singerName = this.list[this.currentIndex].singer
-        // console.table(this.list[this.currentIndex])
-        this.albumImg = this.list[this.currentIndex].image
-        console.log(this.albumImg)
+      playedSong () {
+        console.log(this.playedSong)
       }
     },
     methods: {
@@ -65,6 +71,28 @@
       },
       changeToNormalBox () {
         this.changeToNormalBox()
+      },
+      enter (el, done) {
+        const {x, y, scale} = this._getAnimationPos()
+        console.log(x, y, scale)
+      },
+      afterEnter (el) {},
+      leave (el, done) {
+      },
+      afterLeave (el) {},
+      _getAnimationPos () {
+        let innerWidth = window.innerWidth   // 视口
+        let innerHeight = window.innerHeight  // 视口
+        let paddingTop = 80
+        let paddingLeft = 20
+        let paddingBottom = 10
+        let widthMini = 40  // mini-box的直径
+        let widthNormal = innerWidth * 0.8 // normal-box的直径
+        return {
+          y: innerHeight - paddingTop - widthNormal * 0.5 - paddingBottom - widthMini * 0.5,
+          x: innerWidth * 0.5 - paddingLeft - widthMini * 0.5,
+          scale: widthMini / widthNormal
+        }
       },
       ...mapActions({
         changeToMiniBox: 'changeToMiniBox',
@@ -85,6 +113,15 @@
       height: 100%
       background-color: $color-background
       color: #FFFFFF
+      &.normal-enter-active, &.normal-leave-active
+        transition: all .4s
+        .top
+          transition: all .4s
+      &.normal-enter, &.normal-leave-to
+        opacity: 0
+      &.normal-enter
+        .top
+          transform: translateY(-100px)
       .top
         position: relative
         margin-bottom: 25px
@@ -156,7 +193,10 @@
       width: 100%
       color: #FFFFFF
       background-color: $color-highlight-background
-      // line-height: 60px
+      &.mini-enter-active, &.mini-leave-active
+        transition: all .4s
+      &.mini-enter, &.mini-leave-to
+        opacity: 0
       .cd-wrapper
         position: relative
         display: inline-block
