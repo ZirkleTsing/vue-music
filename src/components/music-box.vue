@@ -46,11 +46,8 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
+  import animations from 'create-keyframe-animation'
   export default {
-    data () {
-      return {
-      }
-    },
     computed: {
       ...mapGetters([
         'list',
@@ -74,12 +71,56 @@
       },
       enter (el, done) {
         const {x, y, scale} = this._getAnimationPos()
-        console.log(x, y, scale)
+        let animation = {
+          '0%': {
+            transform: `translate3d(${-x}px, ${y}px, 0) scale(${scale})`
+          },
+          '60%': {
+            transform: `translate3d(0,0,0) scale(1.1)`
+          },
+          '100%': {
+            transform: `translate3d(0,0,0) scale(1)`
+          }
+        }
+
+        animations.registerAnimation({
+          name: 'show-normal-box',
+          animation,
+          presets: {
+            duration: 400,
+            easing: 'linear'
+          }
+        })
+        animations.runAnimation(this.$refs.cdWrapper, 'show-normal-box', done)
       },
-      afterEnter (el) {},
+      afterEnter (el) {
+        animations.unregisterAnimation('show-normal-box')
+        this.$refs.cdWrapper.style.animation = ''
+      },
       leave (el, done) {
+        const {x, y, scale} = this._getAnimationPos()
+        let animation = {
+          '0%': {
+            transform: `translate3d(0,0,0) scale(1)`
+          },
+          '100%': {
+            transform: `translate3d(${-x}px,${y}px,0) scale(${scale})`
+          }
+        }
+        animations.registerAnimation({
+          name: 'hide-normal-box',
+          animation,
+          presets: {
+            duration: 300,
+            easing: 'linear'
+          }
+        })
+        animations.runAnimation(this.$refs.cdWrapper, 'hide-normal-box', done)
       },
-      afterLeave (el) {},
+      afterLeave (el) {
+        animations.unregisterAnimation('hide-normal-box')
+        this.$refs.cdWrapper.style.animation = ''
+      },
       _getAnimationPos () {
         let innerWidth = window.innerWidth   // 视口
         let innerHeight = window.innerHeight  // 视口
