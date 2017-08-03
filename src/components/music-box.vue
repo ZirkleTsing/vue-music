@@ -15,12 +15,33 @@
           <div v-if="playedSong" class="title">{{playedSong.name}}</div>
           <div v-if="playedSong" class="subtitle">{{playedSong.singer}}</div>
         </div>
+
         <div class="middle">
           <div class="middle-l">
             <div ref="cdWrapper" class="cd-wrapper">
               <div v-if="playedSong" class="cd">
                 <img class="image" :src="playedSong.image"> 
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="operators">
+            <div class="icon i-left">
+              <i class="icon-sequence"></i>
+            </div>
+            <div class="icon i-left">
+              <i class="icon-prev"></i>
+            </div>
+            <div class="icon i-center">
+              <i class="icon-play"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon-next"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon-not-favorite"></i>
             </div>
           </div>
         </div>
@@ -224,6 +245,27 @@
                 height: 100%
                 border-radius: 50%
                 border: 10px solid hsla(0,0%,100%,.1)
+      .bottom
+        position: absolute
+        bottom: 50px
+        width: 100%
+        .operators
+          display: flex
+          align-items: center
+          .icon
+            flex: 1
+            color: $color-theme
+            i
+              font-size: 30px
+            &.i-left
+              text-align: right
+            &.i-center
+              text-align: center
+              padding: 0 20px
+              i
+                font-size: 40px
+            &.i-right
+              text-align: left
     .mini-player
       position: fixed
       display: block
