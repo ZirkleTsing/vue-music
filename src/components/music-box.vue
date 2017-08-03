@@ -9,7 +9,7 @@
     >
       <div class="normal-player" v-show="fullScreen">
         <div class="top">
-          <div class="mini-icon" @click="minibox">
+          <div class="mini-icon" @click="changeToMiniBox">
             <i class="icon-back"></i>
           </div>
           <div v-if="playedSong" class="title">{{playedSong.name}}</div>
@@ -100,12 +100,6 @@
       }
     },
     methods: {
-      minibox () {
-        this.changeToMiniBox()
-      },
-      changeToNormalBox () {
-        this.changeToNormalBox()
-      },
       enter (el, done) {
         const {x, y, scale} = this._getAnimationPos()
         let animation = {
