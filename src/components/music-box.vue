@@ -30,6 +30,10 @@
         </div>
 
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{_format(currentTime)}}</span>
+            <span class="time time-r">{{_format(totalTime)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
@@ -69,7 +73,10 @@
            :src="playedSong.url"
            @canplay="ready"
            @error="error"
+           @timeupdate="timeUpdate"
     ></audio>
+    <!--duration 返回当前音频/视频的长度（以秒计）  -->
+    <!--currentTime 设置或返回音频/视频中的当前播放位置（以秒计） -->
   </div>
 </template>
 
@@ -79,7 +86,9 @@
   export default {
     data () {
       return {
-        audioReady: false
+        audioReady: false,
+        currentTime: 0,
+        totalTime: 0
       }
     },
     computed: {
@@ -100,7 +109,9 @@
     },
     watch: {
       // 切换歌曲时触发watcher,等待audio就绪时,根据playing状态,决定是否播放音乐
-      playedSong () {
+      playedSong (newSong) {
+        // 更totalTime
+        this.totalTime = newSong.duration
         let audio = this.$refs.audio
         this.$nextTick(() => {
           if (this.playing) {
@@ -227,6 +238,22 @@
       },
       error () {
         this.audioReady = true
+      },
+      timeUpdate (e) {
+        this.currentTime = e.target.currentTime
+      },
+      _format (time) {
+        let minute = Math.floor(time / 60)
+        let second = this._pad(Math.floor(time % 60))
+        return `${minute}:${second}`
+      },
+      _pad (minute) {
+        let token = minute.toString()
+        let len = token.length
+        if (len < 2) {
+          token = '0' + token
+        }
+        return token
       },
       ...mapMutations({
         setPlaying: 'SET_PLAYING',
