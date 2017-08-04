@@ -3,7 +3,7 @@
     <div class="process-bar" ref="processBar">
       <div class="bar-inner">
         <div class="progress" ref="process"></div>
-        <div class="progress-btn-wrapper">
+        <div class="progress-btn-wrapper" ref="processBtn">
           <div class="progress-btn"></div>
         </div>
       </div>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+  const PROCESS_BTN_WIDTH = 16
   export default {
     props: {
       percent: {
@@ -22,8 +23,11 @@
     watch: {
       percent (newPercent) {
         // percent变化的时候,dom已经渲染了 可以取到dom宽度
-        const process = this.$refs.processBar.clientWidth * newPercent
+        // button移动的距离实际上是整个进度条减去一个身位的button宽度 (totalX)
+        // 所以button移动端位移 X 的计算方法是 用 totalX * percent
+        const process = (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH) * this.percent
         this.$refs.process.style.width = `${process}px`
+        this.$refs.processBtn.style.transform = `translate3d(${process}px,0,0)`
       }
     }
   }
@@ -47,7 +51,7 @@
         width: 30px
         height: 30px
         top: -13px
-        left: -7px
+        left: -8px
         .progress-btn
           position: relative
           box-sizing: border-box
