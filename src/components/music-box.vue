@@ -67,6 +67,12 @@
           <div class="title">{{playedSong.name}}</div>
           <div class="subtitle">{{playedSong.singer}}</div>
         </div>
+        <div class="control">
+          <i class="icon-mini icon-play-mini"></i>
+        </div>
+        <div class="control">
+          <i class="icon-mini icon-playlist"></i>
+        </div>
       </div>
     </transition>
 
@@ -142,8 +148,10 @@
       // fullScreen为true时，变更后下一个tick可以取到值
       fullScreen (current) {
         console.log('fullScreen', this.$refs.bar.$el.clientWidth)
+        console.log(current)
         this.$nextTick(() => {
           console.log('fullScreen', this.$refs.bar.$el.clientWidth)
+          console.log('nextTick', current)
         })
       }
     },
@@ -435,6 +443,7 @@
         position: relative
         width: 40px
         height: 40px
+        flex: 0 0 40px
         box-sizing: border-box
         margin-left: 20px
         margin-right: 10px
@@ -453,6 +462,7 @@
             height: 100%
       .desc
         display: inline-block
+        flex: 1
         .title
           font-size: 14px
           color: #FFFFFF
@@ -460,6 +470,12 @@
         .subtitle
           font-size: 12px
           color: hsla(0,0%,100%,.3)
+      .control
+        .icon-mini
+          font-size: 32px
+          color: $color-theme-d
+          flex: 0 0 30px
+          padding: 0 10px
   @keyframes rotate
     0%
       transform: rotate(0)
