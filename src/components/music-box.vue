@@ -32,7 +32,7 @@
         <div class="bottom">
           <div class="progress-wrapper">
             <span class="time time-l">{{_format(currentTime)}}</span>
-            <progress-bar class="progress-bar-wrapper"></progress-bar>
+            <progress-bar :percent="percent" class="progress-bar-wrapper" ref="bar"></progress-bar>
             <span class="time time-r">{{_format(totalTime)}}</span>
           </div>
           <div class="operators">
@@ -90,9 +90,14 @@
       return {
         audioReady: false,
         currentTime: 0,
-        totalTime: 0
+        totalTime: 0,
+        percent: 0.6
       }
     },
+    // mounted() {
+    //  display:none 此刻浏览器未'渲染',所以取不到值
+    //   console.log('mounted', this.$refs.bar.$el.clientWidth)
+    // },
     computed: {
       ...mapGetters([
         'list',
@@ -131,6 +136,14 @@
           } else {
             audio.pause()
           }
+        })
+      },
+      // 笔记: 当一个dom display为none时,是取不到clientWidth的,只有当展示出来以后才能取到真实值
+      // fullScreen为true时，变更后下一个tick可以取到值
+      fullScreen (current) {
+        console.log('fullScreen', this.$refs.bar.$el.clientWidth)
+        this.$nextTick(() => {
+          console.log('fullScreen', this.$refs.bar.$el.clientWidth)
         })
       }
     },
@@ -243,6 +256,7 @@
       },
       timeUpdate (e) {
         this.currentTime = e.target.currentTime
+        this.percent = this.currentTime / this.totalTime
       },
       _format (time) {
         let minute = Math.floor(time / 60)

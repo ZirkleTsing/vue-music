@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="process-bar">
+    <div class="process-bar" ref="processBar">
       <div class="bar-inner">
-        <div class="progress"></div>
+        <div class="progress" ref="process"></div>
         <div class="progress-btn-wrapper">
           <div class="progress-btn"></div>
         </div>
@@ -12,7 +12,21 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    props: {
+      percent: {
+        default: 0,
+        type: Number
+      }
+    },
+    watch: {
+      percent (newPercent) {
+        // percent变化的时候,dom已经渲染了 可以取到dom宽度
+        const process = this.$refs.processBar.clientWidth * newPercent
+        this.$refs.process.style.width = `${process}px`
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" scoped>
