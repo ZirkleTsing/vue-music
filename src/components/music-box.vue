@@ -379,10 +379,11 @@
             line-height: 30px
             font-size: 12px
             color: #fff
+            &.time-l
+              text-align: left
+            &.time-r
+              text-align: right
           .progress-bar-wrapper
-            font-size: 12px
-            line-height: 30px
-            color: #fff
             flex: 1
         .operators
           display: flex
