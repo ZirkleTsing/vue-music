@@ -12,7 +12,7 @@ const getters = {
 
   currentIndex: state => state.currentIndex,
 
-  playedSong: state => state.list[state.currentIndex]
+  playedSong: state => state.list[state.currentIndex] || {}  // v-show {}.xxx = undefined 不会报错
 }
 
 export default getters

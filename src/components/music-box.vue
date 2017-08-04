@@ -9,20 +9,20 @@
     >
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <img v-if="playedSong" width="100%" height="100%" :src="playedSong.image">
+          <img width="100%" height="100%" :src="playedSong.image">
         </div>
         <div class="top">
           <div class="mini-icon" @click="changeToMiniBox">
             <i class="icon-back"></i>
           </div>
-          <div v-if="playedSong" class="title">{{playedSong.name}}</div>
-          <div v-if="playedSong" class="subtitle">{{playedSong.singer}}</div>
+          <div class="title">{{playedSong.name}}</div>
+          <div class="subtitle">{{playedSong.singer}}</div>
         </div>
 
         <div class="middle">
           <div class="middle-l">
             <div ref="cdWrapper" class="cd-wrapper">
-              <div v-if="playedSong" class="cd"  :class="rotateState">
+              <div class="cd"  :class="rotateState">
                 <img class="image" :src="playedSong.image"> 
               </div>
             </div>
@@ -34,13 +34,13 @@
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
+            <div @click="prev" class="icon i-left">
               <i class="icon-prev"></i>
             </div>
             <div @click="togglePlay" class="icon i-center">
               <i :class="playIcon"></i>
             </div>
-            <div class="icon i-right">
+            <div @click="next" class="icon i-right">
               <i class="icon-next"></i>
             </div>
             <div class="icon i-right">
@@ -54,18 +54,22 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="changeToNormalBox">
         <div class="cd-wrapper">
-          <div v-if="playedSong" class="cd" :class="rotateState">
+          <div class="cd" :class="rotateState">
             <img class="image" :src="playedSong.image">
           </div>
         </div>
-        <div v-if="playedSong" class="desc">
+        <div class="desc">
           <div class="title">{{playedSong.name}}</div>
           <div class="subtitle">{{playedSong.singer}}</div>
         </div>
       </div>
     </transition>
-    <!-- 页面进入时侦测playedSong,存在即渲染音乐盒,nextTick时候渲染完毕,可以播放 -->
-    <audio ref="audio" v-if="playedSong" :src="playedSong.url"></audio>
+
+    <audio ref="audio" 
+           :src="playedSong.url"
+           @canplay="ready"
+           @error="error"
+    ></audio>
   </div>
 </template>
 
@@ -73,6 +77,11 @@
   import {mapGetters, mapActions, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   export default {
+    data () {
+      return {
+        audioReady: false
+      }
+    },
     computed: {
       ...mapGetters([
         'list',
@@ -90,11 +99,21 @@
       }
     },
     watch: {
-      // playing和playedSong在一个周期内被赋值，触发watch钩子函数，此时audio渲染,nextTick时候渲染完毕后,取到dom播放音乐
-      playing () {
+      // 切换歌曲时触发watcher,等待audio就绪时,根据playing状态,决定是否播放音乐
+      playedSong () {
+        let audio = this.$refs.audio
         this.$nextTick(() => {
-          let audio = this.$refs.audio
           if (this.playing) {
+            audio.play()
+          } else {
+            audio.pause()
+          }
+        })
+      },
+      playing (newPlayState) {
+        let audio = this.$refs.audio
+        this.$nextTick(() => {
+          if (newPlayState) {
             audio.play()
           } else {
             audio.pause()
@@ -172,12 +191,46 @@
       togglePlay () {
         this.setPlaying(!this.playing)
       },
+      prev () {
+        // 向前切歌,0是第一首歌曲,-1时循环列表
+        // audio准备就绪后prev才会生效,否则直接return
+        if (!this.audioReady) {
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.list.length - 1
+        }
+        this.setCurrentIndex(index)
+        this.setPlaying(true)
+        this.audioReady = false
+      },
+      next () {
+        // 向后切歌,this.list.length-1是最后一首歌曲,变成0
+        if (!this.audioReady) {
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.list.length - 1) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        this.setPlaying(true)
+        this.audioReady = false
+      },
       ...mapActions({
         changeToMiniBox: 'changeToMiniBox',
         changeToNormalBox: 'changeToNormalBox'
       }),
+      ready () {
+        this.audioReady = true
+      },
+      error () {
+        this.audioReady = true
+      },
       ...mapMutations({
-        setPlaying: 'SET_PLAYING'
+        setPlaying: 'SET_PLAYING',
+        setCurrentIndex: 'SET_CURRENTINDEX'
       })
     }
   }
