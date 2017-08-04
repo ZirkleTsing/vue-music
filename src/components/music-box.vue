@@ -15,14 +15,14 @@
           <div class="mini-icon" @click="changeToMiniBox">
             <i class="icon-back"></i>
           </div>
-          <div class="title">{{playedSong.name}}</div>
-          <div class="subtitle">{{playedSong.singer}}</div>
+          <div class="title" v-html="playedSong.name"></div>
+          <div class="subtitle" v-html="playedSong.singer"></div>
         </div>
 
         <div class="middle">
           <div class="middle-l">
             <div ref="cdWrapper" class="cd-wrapper">
-              <div class="cd"  :class="rotateState">
+              <div class="cd" :class="rotateState">
                 <img class="image" :src="playedSong.image"> 
               </div>
             </div>
@@ -40,13 +40,13 @@
               <i class="icon-sequence"></i>
             </div>
             <div @click="prev" class="icon i-left">
-              <i class="icon-prev"></i>
+              <i class="icon-prev" :class="readyState"></i>
             </div>
             <div @click="togglePlay" class="icon i-center">
-              <i :class="playIcon"></i>
+              <i :class="[playIcon,readyState]"></i>
             </div>
             <div @click="next" class="icon i-right">
-              <i class="icon-next"></i>
+              <i class="icon-next" :class="readyState"></i>
             </div>
             <div class="icon i-right">
               <i class="icon-not-favorite"></i>
@@ -64,8 +64,8 @@
           </div>
         </div>
         <div class="desc">
-          <div class="title">{{playedSong.name}}</div>
-          <div class="subtitle">{{playedSong.singer}}</div>
+          <div class="title" v-html="playedSong.name"></div>
+          <div class="subtitle" v-html="playedSong.singer"></div>
         </div>
         <div @click.stop="togglePlay" class="control">
           <i class="icon-mini" :class="playMiniIcon"></i>
@@ -121,6 +121,9 @@
       },
       rotateState () {
         return this.playing ? 'rotating' : 'rotating pause'
+      },
+      readyState () {
+        return this.audioReady ? '' : 'pending'
       }
     },
     watch: {
@@ -420,6 +423,8 @@
             color: $color-theme
             i
               font-size: 30px
+              &.pending
+                color: $color-theme-d
             &.i-left
               text-align: right
             &.i-center
