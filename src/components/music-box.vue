@@ -67,8 +67,8 @@
           <div class="title">{{playedSong.name}}</div>
           <div class="subtitle">{{playedSong.singer}}</div>
         </div>
-        <div class="control">
-          <i class="icon-mini icon-play-mini"></i>
+        <div @click.stop="togglePlay" class="control">
+          <i class="icon-mini" :class="playMiniIcon"></i>
         </div>
         <div class="control">
           <i class="icon-mini icon-playlist"></i>
@@ -115,6 +115,9 @@
       ]),
       playIcon () {
         return this.playing ? 'icon-pause' : 'icon-play'
+      },
+      playMiniIcon () {
+        return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
       },
       rotateState () {
         return this.playing ? 'rotating' : 'rotating pause'
@@ -303,13 +306,15 @@
       color: #FFFFFF
       &.normal-enter-active, &.normal-leave-active
         transition: all .4s
-        .top
-          transition: all .4s
+        .top, .bottom
+          transition: all .4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
       &.normal-enter, &.normal-leave-to
         opacity: 0
       &.normal-enter
         .top
-          transform: translateY(-100px)
+          transform: translate3d(0, -100px, 0)
+        .bottom
+          transform: translate3d(0, 100px, 0)
       .background
         position: absolute
         left: 0
@@ -471,11 +476,14 @@
           font-size: 12px
           color: hsla(0,0%,100%,.3)
       .control
+        flex: 0 0 30px
+        padding: 0 10px
+        width: 30px
         .icon-mini
-          font-size: 32px
+          font-size: 30px
           color: $color-theme-d
-          flex: 0 0 30px
-          padding: 0 10px
+          &.icon-play-mini, &.icon-pause-mini
+            font-size: 32px
   @keyframes rotate
     0%
       transform: rotate(0)
