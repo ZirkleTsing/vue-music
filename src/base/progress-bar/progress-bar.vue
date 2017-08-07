@@ -3,7 +3,12 @@
     <div class="process-bar" ref="processBar">
       <div class="bar-inner">
         <div class="progress" ref="process"></div>
-        <div class="progress-btn-wrapper" ref="processBtn">
+        <div class="progress-btn-wrapper" 
+             ref="processBtn"
+             @touchstart="progressTouchStart"
+             @touchmove="progressTouchMove"
+             @touchend="progressTouchEnd"
+        >
           <div class="progress-btn"></div>
         </div>
       </div>
@@ -18,6 +23,17 @@
       percent: {
         default: 0,
         type: Number
+      }
+    },
+    methods: {
+      progressTouchStart () {
+        console.log(`touch start`)
+      },
+      progressTouchMove () {
+        console.log(`touch move`)
+      },
+      progressTouchEnd () {
+        console.log(`touch end`)
       }
     },
     watch: {

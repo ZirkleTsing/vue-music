@@ -263,9 +263,11 @@
         changeToNormalBox: 'changeToNormalBox'
       }),
       ready () {
+        // 恢复切换歌曲功能
         this.audioReady = true
       },
       error () {
+        // 出现错误后,也要恢复ready状态,恢复切歌功能
         this.audioReady = true
       },
       timeUpdate (e) {
