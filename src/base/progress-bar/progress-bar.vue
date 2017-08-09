@@ -42,14 +42,22 @@
         this.touchInfo.touchStartX = touch.pageX
       },
       progressTouchMove (e) {
-        // let touch = e.touches[0]
-        // // move事件触发，不断更新offset的值，利用该值移动processBar和Btn
-        // let offset = touch.pageX - this.touchInfo.touchStartX
-        // let width = this.$refs.processBar.clientWidth + offset
+        let touch = e.touches[0]
+        // 当前进度条的宽度
+        let currentWidth = this.touchInfo.processBarWidth
+        // move事件触发，不断更新offset的值，利用该值移动processBar和Btn
+        let fingerOffset = touch.pageX - this.touchInfo.touchStartX
+        let offset = Math.min(Math.max(0, currentWidth + fingerOffset), this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH)
+        this._offset(offset)
       },
       progressTouchEnd () {
         // console.log(`touch end`)
         this.touchInfo.touching = false
+      },
+      _offset (offset) {
+        this.$refs.process.style.width = `${offset}px`
+        this.$refs.processBtn.style.transform = `translate3d(${offset}px,0,0)`
+        console.log(offset)
       }
     },
     watch: {
@@ -63,6 +71,8 @@
         const process = (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH) * this.percent
         this.$refs.process.style.width = `${process}px`
         this.$refs.processBtn.style.transform = `translate3d(${process}px,0,0)`
+        // 更新当前宽度
+        this.touchInfo.processBarWidth = process
       }
     }
   }
