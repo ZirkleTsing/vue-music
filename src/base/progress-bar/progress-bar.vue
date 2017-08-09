@@ -25,15 +25,31 @@
         type: Number
       }
     },
+    data () {
+      // 用于存储touch事件的相关信息
+      return {
+        touchInfo: {
+          // 记录第一个手指按下的x坐标
+          touchStartX: -1,
+          touching: false
+        }
+      }
+    },
     methods: {
-      progressTouchStart () {
-        console.log(`touch start`)
+      progressTouchStart (e) {
+        this.touchInfo.touching = true
+        let touch = e.touches[0]
+        this.touchInfo.touchStartX = touch.pageX
       },
-      progressTouchMove () {
-        console.log(`touch move`)
+      progressTouchMove (e) {
+        // let touch = e.touches[0]
+        // // move事件触发，不断更新offset的值，利用该值移动processBar和Btn
+        // let offset = touch.pageX - this.touchInfo.touchStartX
+        // let width = this.$refs.processBar.clientWidth + offset
       },
       progressTouchEnd () {
-        console.log(`touch end`)
+        // console.log(`touch end`)
+        this.touchInfo.touching = false
       }
     },
     watch: {
@@ -41,6 +57,9 @@
         // percent变化的时候,dom已经渲染了 可以取到dom宽度
         // button移动的距离实际上是整个进度条减去一个身位的button宽度 (totalX)
         // 所以button移动端位移 X 的计算方法是 用 totalX * percent
+        if (this.touchInfo.touching) {
+          return
+        }
         const process = (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH) * this.percent
         this.$refs.process.style.width = `${process}px`
         this.$refs.processBtn.style.transform = `translate3d(${process}px,0,0)`
