@@ -136,6 +136,7 @@
     watch: {
       // 切换歌曲时触发watcher,等待audio就绪时,根据playing状态,决定是否播放音乐
       playedSong (newSong) {
+        console.log('change')
         // 更totalTime
         this.totalTime = newSong.duration
         let audio = this.$refs.audio
@@ -283,7 +284,15 @@
           let sequenceList = this.sequenceList
           // 打乱的播放列表
           let randomList = shuffle(sequenceList)
+          // 设置完列表后，也需要修改正在播放歌曲的index，否则来回切歌会导致顺序不对
+          // 例如:当前菊花台，切下一首歌在切回来时，不是菊花台
           this.setList(randomList)
+          let playedSong = this.playedSong
+          // 设置乱序列表中对应歌曲的
+          let index = randomList.findIndex((item) => {
+            return item.id === playedSong.id
+          })
+          this.setCurrentIndex(index)
         }
       },
       error () {
