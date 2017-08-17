@@ -51,7 +51,6 @@
         this._offset(offset)
       },
       progressTouchEnd () {
-        // console.log(`touch end`)
         this.touchInfo.touching = false
       },
       _offset (offset) {

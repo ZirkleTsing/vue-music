@@ -81,6 +81,7 @@
            @canplay="ready"
            @error="error"
            @timeupdate="timeUpdate"
+           @ended="end"
     ></audio>
     <!--duration 返回当前音频/视频的长度（以秒计）  -->
     <!--currentTime 设置或返回音频/视频中的当前播放位置（以秒计） -->
@@ -251,6 +252,7 @@
         }
         this.setCurrentIndex(index)
         this.setPlaying(true)
+        this.$refs.audio.play()
         this.audioReady = false
       },
       next () {
@@ -264,7 +266,20 @@
         }
         this.setCurrentIndex(index)
         this.setPlaying(true)
+        this.$refs.audio.play()
         this.audioReady = false
+      },
+      end () {
+        if (this.mode === MODE.LOOP) {
+          this.loop()
+          return
+        }
+        this.next()
+      },
+      loop () {
+        let audio = this.$refs.audio
+        audio.currentTime = 0
+        audio.play()
       },
       ...mapActions({
         changeToMiniBox: 'changeToMiniBox',
