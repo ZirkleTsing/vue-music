@@ -36,8 +36,8 @@
             <span class="time time-r">{{_format(totalTime)}}</span>
           </div>
           <div class="operators">
-            <div class="icon i-left">
-              <i class="icon-sequence"></i>
+            <div class="icon i-left" @click="changeMode">
+              <i :class="modeIcon"></i>
             </div>
             <div @click="prev" class="icon i-left">
               <i class="icon-prev" :class="readyState"></i>
@@ -89,6 +89,8 @@
 
 <script>
   import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import {MODE} from 'common/js/config'
+  import {shuffle} from 'common/js/utils'
   import animations from 'create-keyframe-animation'
   import ProgressBar from 'base/progress-bar/progress-bar'
   export default {
@@ -107,17 +109,22 @@
     computed: {
       ...mapGetters([
         'list',
+        'sequenceList',
         'fullScreen',
         'currentIndex',
         'singer',
         'playedSong',
-        'playing'
+        'playing',
+        'mode'
       ]),
       playIcon () {
         return this.playing ? 'icon-pause' : 'icon-play'
       },
       playMiniIcon () {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+      },
+      modeIcon () {
+        return this.mode === MODE.SEQUENCE ? 'icon-sequence' : this.mode === MODE.LOOP ? 'icon-loop' : 'icon-random'
       },
       rotateState () {
         return this.playing ? 'rotating' : 'rotating pause'
@@ -260,11 +267,24 @@
       },
       ...mapActions({
         changeToMiniBox: 'changeToMiniBox',
-        changeToNormalBox: 'changeToNormalBox'
+        changeToNormalBox: 'changeToNormalBox',
+        randomPlay: 'randomPlay'
       }),
       ready () {
         // 恢复切换歌曲功能
         this.audioReady = true
+      },
+      changeMode () {
+        // 递增mode，实现模式切换
+        let currentMode = (this.mode + 1) % 3
+        this.setMode(currentMode)
+        if (this.mode === MODE.RANDOM) {
+          // 如果是随机播放,取到当前播放的顺序列表,打乱放入播放列表中
+          let sequenceList = this.sequenceList
+          // 打乱的播放列表
+          let randomList = shuffle(sequenceList)
+          this.setList(randomList)
+        }
       },
       error () {
         // 出现错误后,也要恢复ready状态,恢复切歌功能
@@ -289,7 +309,9 @@
       },
       ...mapMutations({
         setPlaying: 'SET_PLAYING',
-        setCurrentIndex: 'SET_CURRENTINDEX'
+        setCurrentIndex: 'SET_CURRENTINDEX',
+        setMode: 'SET_MODE',
+        setList: 'SET_LIST'
       })
     },
     components: {

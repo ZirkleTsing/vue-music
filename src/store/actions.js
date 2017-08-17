@@ -1,7 +1,7 @@
 import * as types from './mutations.types'
 
 const actions = {
-  openMusicBox ({commit, state}, {list, currentIndex}) {
+  sequencePlay ({commit, state}, {list, currentIndex}) {
     // 打开音乐盒: 记录当前有序列表->全屏播放->当前歌曲的index->设置播放状态
     commit(types.SET_FULLSCREEN, true)
     commit(types.SET_LIST, list)

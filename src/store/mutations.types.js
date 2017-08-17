@@ -10,4 +10,5 @@ export const SET_SEQUENCELIST = 'SET_SEQUENCELIST'
 
 export const SET_CURRENTINDEX = 'SET_CURRENTINDEX'
 
+export const SET_MODE = 'SET_MODE'
 // export const SET_PLAYEDSONG = 'SET_PLAYEDSONG'

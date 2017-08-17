@@ -8,6 +8,8 @@ const getters = {
 
   list: state => state.list,
 
+  mode: state => state.mode,
+
   sequenceList: state => state.sequenceList,
 
   currentIndex: state => state.currentIndex,

@@ -86,13 +86,13 @@
       },
       chooseSong (song, index) {
         console.log('chooseSong emit:', song, index)
-        this.openMusicBox({
+        this.sequencePlay({
           list: this.song,
           currentIndex: index
         })
       },
       ...mapActions({
-        openMusicBox: 'openMusicBox'
+        sequencePlay: 'sequencePlay'
       })
     },
     computed: {
