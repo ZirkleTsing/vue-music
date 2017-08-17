@@ -259,7 +259,7 @@
           return
         }
         let index = this.currentIndex + 1
-        if (index === this.list.length - 1) {
+        if (index === this.list.length) {
           index = 0
         }
         this.setCurrentIndex(index)
