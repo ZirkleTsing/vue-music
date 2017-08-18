@@ -49,9 +49,15 @@
         let fingerOffset = touch.pageX - this.touchInfo.touchStartX
         let offset = Math.min(Math.max(0, currentWidth + fingerOffset), this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH)
         this._offset(offset)
+        this.$emit('percentChange', offset / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
       },
       progressTouchEnd () {
-        this.$emit('percent', this.$refs.process.style.width / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
+        // this.$emit('percent', this.$refs.process.style.width / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
+        console.log('end')
+        // console.log(this.$refs.process.style.width)
+        // this.$emit('percent', this.$refs.process.clientWidth / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
+        // console.log(this.$refs.process.clientWidth)
+        this.$emit('percentChange', this.$refs.process.clientWidth / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
         this.touchInfo.touching = false
       },
       _offset (offset) {
