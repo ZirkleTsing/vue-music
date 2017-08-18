@@ -51,6 +51,7 @@
         this._offset(offset)
       },
       progressTouchEnd () {
+        this.$emit('percent', this.$refs.process.style.width / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
         this.touchInfo.touching = false
       },
       _offset (offset) {

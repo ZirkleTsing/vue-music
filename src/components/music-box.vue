@@ -32,7 +32,12 @@
         <div class="bottom">
           <div class="progress-wrapper">
             <span class="time time-l">{{_format(currentTime)}}</span>
-            <progress-bar :percent="percent" class="progress-bar-wrapper" ref="bar"></progress-bar>
+            <progress-bar :percent="percent" 
+                          class="progress-bar-wrapper"
+                          ref="bar"
+                          @percent="percent"
+            >
+            </progress-bar>
             <span class="time time-r">{{_format(totalTime)}}</span>
           </div>
           <div class="operators">
@@ -313,6 +318,10 @@
       error () {
         // 出现错误后,也要恢复ready状态,恢复切歌功能
         this.audioReady = true
+      },
+      percent (percent) {
+        console.log('percent:', precent)
+        this.$refs.audio.currentTime = this.totalTime * percent
       },
       timeUpdate (e) {
         this.currentTime = e.target.currentTime
