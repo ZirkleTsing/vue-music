@@ -53,7 +53,7 @@
       },
       progressTouchEnd () {
         // this.$emit('percent', this.$refs.process.style.width / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
-        console.log('end')
+        // console.log('end')
         // console.log(this.$refs.process.style.width)
         // this.$emit('percent', this.$refs.process.clientWidth / (this.$refs.processBar.clientWidth - PROCESS_BTN_WIDTH))
         // console.log(this.$refs.process.clientWidth)
@@ -63,7 +63,7 @@
       _offset (offset) {
         this.$refs.process.style.width = `${offset}px`
         this.$refs.processBtn.style.transform = `translate3d(${offset}px,0,0)`
-        console.log(offset)
+        // console.log(offset)
       }
     },
     watch: {
